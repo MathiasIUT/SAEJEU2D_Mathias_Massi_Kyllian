@@ -11,10 +11,10 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="298.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.mcontay.saejeu2d.controleur.Controleur">
    <center>
-      <BorderPane maxHeight="256.0" maxWidth="256.0" prefHeight="256.0" prefWidth="256.0" BorderPane.alignment="CENTER">
-         <center>
-            <TilePane fx:id="panneauJeu" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: gray;" BorderPane.alignment="CENTER" />
-         </center>
-      </BorderPane>
+      <StackPane fx:id="stackpane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TilePane fx:id="TilePane" maxHeight="256.0" maxWidth="256.0" prefHeight="256.0" prefWidth="256.0" />
+         </children>
+      </StackPane>
    </center>
 </BorderPane>

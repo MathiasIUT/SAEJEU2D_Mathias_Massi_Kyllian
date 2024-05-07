@@ -1,5 +1,6 @@
 package universite_paris8.iut.mcontay.saejeu2d.vue;
 
+import javafx.scene.layout.StackPane;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Terrain;
 import javafx.scene.image.Image;
