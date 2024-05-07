@@ -3,11 +3,11 @@ package universite_paris8.iut.mcontay.saejeu2d.modele;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-public class Sprite {
+public class Joueur {
     private DoubleProperty positionX;
     private DoubleProperty positionY;
 
-    public Sprite(double initialX, double initialY) {
+    public Joueur(double initialX, double initialY) {
         positionX = new SimpleDoubleProperty(initialX);
         positionY = new SimpleDoubleProperty(initialY);
     }

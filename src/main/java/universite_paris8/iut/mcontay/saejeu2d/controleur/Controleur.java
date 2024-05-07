@@ -1,12 +1,9 @@
 package universite_paris8.iut.mcontay.saejeu2d.controleur;
 
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Entite;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Personnage;
 import universite_paris8.iut.mcontay.saejeu2d.vue.TerrainVue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,34 +14,25 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import universite_paris8.iut.mcontay.saejeu2d.modele.Sprite;
-import universite_paris8.iut.mcontay.saejeu2d.vue.TerrainVue;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import universite_paris8.iut.mcontay.saejeu2d.modele.Joueur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.TilePane;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Terrain;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.Stack;
 
 public class Controleur implements Initializable {
 
-    private static final double MOVE_DISTANCE = 2;
+    private static final double MOVE_DISTANCE = 10;
     @FXML
     private universite_paris8.iut.mcontay.saejeu2d.modele.Terrain Terrain;
 
     @FXML
-    private StackPane stackpane;
+    private Pane pane;
 
     @FXML
     private TilePane TilePane;
 
     private TerrainVue vue;
-    private static Sprite joueur;
+    private static Joueur joueur;
 
 
     @Override
@@ -56,7 +44,7 @@ public class Controleur implements Initializable {
 
         // Initialisation du sprite
 
-        joueur = new Sprite(0, 0);
+        joueur = new Joueur(0, 0);
         Image spriteImage = null;
         try {
             spriteImage = new Image(Lanceur.class.getResource("joueurDeboutFace.png").openStream());
@@ -65,18 +53,18 @@ public class Controleur implements Initializable {
         }
 
         ImageView spriteView = new ImageView(spriteImage);
-        spriteView.setFitHeight(15);
-        spriteView.setFitWidth(15);
+        spriteView.setFitHeight(20);
+        spriteView.setFitWidth(20);
+        spriteView.translateXProperty().bind(joueur.positionXProperty());
+        spriteView.translateYProperty().bind(joueur.positionYProperty());
+
         spriteView.setPreserveRatio(true);
 
-        System.out.println(stackpane.getChildren());
-        stackpane.getChildren().add(spriteView);
+        System.out.println(pane.getChildren());
+        pane.getChildren().add(spriteView);
 
         // Ecouteurs d'événements pour détecter les touches pressées
-        while (true) {
 
-            //handleKey();
-        }
     }
 
     public void handleKey(KeyEvent e) {
