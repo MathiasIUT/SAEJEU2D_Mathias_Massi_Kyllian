@@ -23,7 +23,7 @@ public class Controleur implements Initializable {
 
     private static final double MOVE_DISTANCE = 5;
     @FXML
-    private universite_paris8.iut.mcontay.saejeu2d.modele.Terrain Terrain;
+    private universite_paris8.iut.mcontay.saejeu2d.modele.Terrain Terrain; //TODO un attribut commmence par une minuscule
 
     @FXML
     private Pane pane;
@@ -37,14 +37,17 @@ public class Controleur implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Terrain = new Terrain(360, 240);
-        this.vue = new TerrainVue(360, 240, TilePane, Terrain);
+        Terrain = new Terrain();
+        this.vue = new TerrainVue(TilePane, Terrain);
         this.vue.affichageVue();
 
 
         // Initialisation du sprite
 
-        joueur = new Joueur(0, 0);
+        joueur = new Joueur(Terrain, 0, 0);
+
+
+        //TODO déplacer dans une classe JoueurVue
         Image spriteImage = null;
         try {
             spriteImage = new Image(Lanceur.class.getResource("joueurDeboutFace.png").openStream());
@@ -53,12 +56,12 @@ public class Controleur implements Initializable {
         }
 
         ImageView spriteView = new ImageView(spriteImage);
-        spriteView.setFitHeight(20);
-        spriteView.setFitWidth(20);
+        spriteView.setFitHeight(35);
+        spriteView.setFitWidth(35);
         spriteView.translateXProperty().bind(joueur.positionXProperty());
         spriteView.translateYProperty().bind(joueur.positionYProperty());
 
-        spriteView.setPreserveRatio(true);
+
 
         System.out.println(pane.getChildren());
         pane.getChildren().add(spriteView);
