@@ -21,7 +21,7 @@ import javafx.scene.input.KeyCode;
 
 public class Controleur implements Initializable {
 
-    private static final double MOVE_DISTANCE = 10;
+    private static final double MOVE_DISTANCE = 5;
     @FXML
     private universite_paris8.iut.mcontay.saejeu2d.modele.Terrain Terrain;
 
@@ -67,15 +67,15 @@ public class Controleur implements Initializable {
 
     }
 
-    public void handleKey(KeyEvent e) {
+    public void mouvement(KeyEvent e) {
         if (e.getCode() == KeyCode.Z) {
-            joueur.setPositionY(joueur.getPositionY() - MOVE_DISTANCE);
+            joueur.seDeplaceHaut();
         } else if (e.getCode() == KeyCode.Q) {
-            joueur.setPositionX(joueur.getPositionX() - MOVE_DISTANCE);
+            joueur.seDeplaceGauche();
         } else if (e.getCode() == KeyCode.S) {
-            joueur.setPositionY(joueur.getPositionY() + MOVE_DISTANCE);
+            joueur.seDeplaceBas();
         } else if (e.getCode() == KeyCode.D) {
-            joueur.setPositionX(joueur.getPositionX() + MOVE_DISTANCE);
+            joueur.seDeplaceDroite();
         }
     }
 
