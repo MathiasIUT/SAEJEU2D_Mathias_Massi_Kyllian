@@ -53,9 +53,33 @@ public class Terrain {
         return codesTuiles.length;
     }
 
-    public boolean estAutorisee(double x, double y)  {
-        //TODO a programmer
-        return true;
-    }
+    public boolean estAutorisee(double x, double y, String direction) {
 
+
+        if (codesTuiles[(int)((y)/16)][(int)((x+32)/16)]==3 && direction.equals("Droite")) {
+            System.out.println("impossible");
+            return false;
+        } else if (codesTuiles[(int)((y)/16)][(int)((x)/16)]==3 && direction.equals("Gauche")) {
+            System.out.println("impossible");
+            return false;
+
+        }
+        else if (codesTuiles[(int)((y)/16)][(int)((x+32)/16)]==3 && direction.equals("Haut")) {
+            System.out.println("impossible");
+            return false;
+
+        }
+
+        else if (codesTuiles[(int)((y+16)/16)][(int)((x+32)/16)]==3 && direction.equals("Bas")) {
+            System.out.println("impossible");
+            return false;
+
+        }
+        else if (x >= 0 && x < codesTuiles[0].length * 14.9 && y >= 0 && y < codesTuiles.length * 14.9) {
+
+            return true;
+        }
+        return false;
+
+    }
 }

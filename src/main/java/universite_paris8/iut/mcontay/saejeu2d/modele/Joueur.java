@@ -48,37 +48,37 @@ public class Joueur {
     }
 
 
-
     public void seDeplaceHaut() {
         double newY = getPositionY() - MOVE_DISTANCE;
-        if (newY >= 0 && terrain.estAutorisee(getPositionX(), newY)) {
+        if (newY >= 0 && terrain.estAutorisee(getPositionX(), newY, "Haut")) {
             setPositionY(newY);
         } else {
             System.out.println("Impossible de se déplacer vers le haut");
         }
     }
 
-    //TODO utiliser partout MOVE_DISTANCE
     public void seDeplaceGauche() {
-        if (getPositionX() - MOVE_DISTANCE >= 0) {
-            setPositionX(getPositionX() - 7);
+        double newX = getPositionX() - MOVE_DISTANCE;
+        if (newX >= 0 && terrain.estAutorisee(newX, getPositionY(), "Gauche")) {
+            setPositionX(newX);
         } else {
             System.out.println("Impossible de se déplacer vers la gauche");
         }
     }
 
     public void seDeplaceBas() {
-        if (getPositionY() + MOVE_DISTANCE <= terrain.getLongueur() * 15) { // 15 est la hauteur en pixels d'une tuile
-            setPositionY(getPositionY() + 7);
-
+        double newY = getPositionY() + MOVE_DISTANCE;
+        if (newY >= 0 && terrain.estAutorisee(getPositionX(), newY, "Bas")) {
+            setPositionY(newY);
         } else {
             System.out.println("Impossible de se déplacer vers le bas");
         }
     }
 
     public void seDeplaceDroite() {
-        if (getPositionX() + MOVE_DISTANCE <= terrain.getLongueur() * 15) { // 15 est la largeur en pixels d'une tuile
-            setPositionX(getPositionX() + 7);
+        double newX = getPositionX() + MOVE_DISTANCE;
+        if (newX >= 0 && terrain.estAutorisee(newX, getPositionY(), "Droite")) {
+            setPositionX(newX);
         } else {
             System.out.println("Impossible de se déplacer vers la droite");
         }

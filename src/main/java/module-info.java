@@ -9,4 +9,6 @@ module SAEJEU2D.src.main.java{
     opens universite_paris8.iut.mcontay.saejeu2d.controleur to javafx.fxml;
     exports universite_paris8.iut.mcontay.saejeu2d.modele;
     opens universite_paris8.iut.mcontay.saejeu2d.modele to javafx.fxml;
+    exports universite_paris8.iut.mcontay.saejeu2d.vue;
+    opens universite_paris8.iut.mcontay.saejeu2d.vue to javafx.fxml;
 }
