@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
+import universite_paris8.iut.mcontay.saejeu2d.vue.JoueurVue;
 
 
 public class Joueur {
@@ -15,7 +16,10 @@ public class Joueur {
     private DoubleProperty positionX;
     private DoubleProperty positionY;
 
-    private static final double MOVE_DISTANCE = 5;
+    private Joueur joueur ;
+    private JoueurVue joueurVue ;
+
+    static final double MOVE_DISTANCE = 5;
 
     public Joueur(Terrain terrain, double initialX, double initialY) {
         this.terrain = terrain;
@@ -48,9 +52,10 @@ public class Joueur {
     }
 
 
+
     public void seDeplaceHaut() {
         double newY = getPositionY() - MOVE_DISTANCE;
-        if (newY >= 0 && terrain.estAutorisee(getPositionX(), newY, "Haut")) {
+        if (terrain.estAutorisee(getPositionX(), newY)) {
             setPositionY(newY);
         } else {
             System.out.println("Impossible de se déplacer vers le haut");
@@ -59,7 +64,7 @@ public class Joueur {
 
     public void seDeplaceGauche() {
         double newX = getPositionX() - MOVE_DISTANCE;
-        if (newX >= 0 && terrain.estAutorisee(newX, getPositionY(), "Gauche")) {
+        if (terrain.estAutorisee(newX,getPositionY() + 16 ) ) {
             setPositionX(newX);
         } else {
             System.out.println("Impossible de se déplacer vers la gauche");
@@ -68,7 +73,7 @@ public class Joueur {
 
     public void seDeplaceBas() {
         double newY = getPositionY() + MOVE_DISTANCE;
-        if (newY >= 0 && terrain.estAutorisee(getPositionX(), newY, "Bas")) {
+        if (terrain.estAutorisee(getPositionX() , newY+32)) {
             setPositionY(newY);
         } else {
             System.out.println("Impossible de se déplacer vers le bas");
@@ -76,23 +81,14 @@ public class Joueur {
     }
 
     public void seDeplaceDroite() {
-        double newX = getPositionX() + MOVE_DISTANCE;
-        if (newX >= 0 && terrain.estAutorisee(newX, getPositionY(), "Droite")) {
+        double newX = getPositionX() + MOVE_DISTANCE ;
+        if (terrain.estAutorisee(newX + 32, getPositionY() + 32 )) {
             setPositionX(newX);
+
         } else {
             System.out.println("Impossible de se déplacer vers la droite");
         }
     }
+
+
 }
-
-
-//    public void mouvement(KeyEvent e) {
-//        if (e.getCode() == KeyCode.Z) {
-//            joueur.setPositionY(joueur.getPositionY() - MOVE_DISTANCE);
-//        } else if (e.getCode() == KeyCode.Q) {
-//            joueur.setPositionX(joueur.getPositionX() - MOVE_DISTANCE);
-//        } else if (e.getCode() == KeyCode.S) {
-//            joueur.setPositionY(joueur.getPositionY() + MOVE_DISTANCE);
-//        } else if (e.getCode() == KeyCode.D) {
-//            joueur.setPositionX(joueur.getPositionX() + MOVE_DISTANCE);
-//        }

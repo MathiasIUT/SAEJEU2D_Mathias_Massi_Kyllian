@@ -29,6 +29,8 @@ public class TerrainVue  {
 
 
 
+
+
         for (int i = 0; i < Terrain.getCodesTuiles().length; i++) {
             for (int j = 0; j < Terrain.getCodesTuiles()[i].length; j++) {
                 switch (Terrain.getCodesTuiles()[i][j]) {

@@ -1,11 +1,22 @@
 package universite_paris8.iut.mcontay.saejeu2d.controleur;
 
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
+import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
+import universite_paris8.iut.mcontay.saejeu2d.modele.GameLoop;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
 import universite_paris8.iut.mcontay.saejeu2d.vue.JoueurVue;
+
 import universite_paris8.iut.mcontay.saejeu2d.vue.TerrainVue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,7 +32,6 @@ import javafx.scene.input.KeyCode;
 
 public class Controleur implements Initializable {
 
-    private static final double MOVE_DISTANCE = 5;
     @FXML
     private universite_paris8.iut.mcontay.saejeu2d.modele.Terrain terrain;
     @FXML
@@ -33,7 +43,14 @@ public class Controleur implements Initializable {
 
     private JoueurVue joueurVue;
 
+    private Timeline gameLoop;
 
+    private int temps;
+
+
+    public Joueur getJoueur(){
+        return this.joueur ;
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         terrain = new Terrain();
@@ -41,10 +58,20 @@ public class Controleur implements Initializable {
         joueurVue = new JoueurVue(pane,joueur);
         this.vue = new TerrainVue(TilePane, terrain);
         this.vue.affichageVue();
+        GameLoop gameloop = new GameLoop();
+        gameloop.initAnimation();
+
 
     }
 
-    public void mouvement(KeyEvent e) {
+    public void mouvement (KeyEvent e){
+
+        KeyCode keyCode = e.getCode();
+        double x ;
+        double y ;
+        x = joueur.getPositionX();
+        y = joueur.getPositionY();
+        joueurVue.VuePositionJoueur(x, y, keyCode);
         if (e.getCode() == KeyCode.Z) {
             joueur.seDeplaceHaut();
         } else if (e.getCode() == KeyCode.Q) {
@@ -55,6 +82,11 @@ public class Controleur implements Initializable {
             joueur.seDeplaceDroite();
         }
     }
+
+
+
+
+
 
 }
 
