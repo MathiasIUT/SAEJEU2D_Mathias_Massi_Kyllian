@@ -5,6 +5,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
+//import universite_paris8.iut.mcontay.saejeu2d.modele.GameLoop;
+//import universite_paris8.iut.mcontay.saejeu2d.modele.Gameloop;
 import universite_paris8.iut.mcontay.saejeu2d.vue.JoueurVue;
 import universite_paris8.iut.mcontay.saejeu2d.vue.TerrainVue;
 import javafx.fxml.FXML;
@@ -33,6 +35,9 @@ public class Controleur implements Initializable {
 
     private JoueurVue joueurVue;
 
+//    private GameLoop gameloop;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -41,18 +46,19 @@ public class Controleur implements Initializable {
         joueurVue = new JoueurVue(pane,joueur);
         this.vue = new TerrainVue(TilePane, terrain);
         this.vue.affichageVue();
+//        this.gameloop = new GameLoop(joueur);
 
     }
 
     public void mouvement(KeyEvent e) {
         if (e.getCode() == KeyCode.Z) {
-            joueur.seDeplaceHaut();
+            joueur.deplacementHaut();
         } else if (e.getCode() == KeyCode.Q) {
-            joueur.seDeplaceGauche();
+            joueur.deplacementGauche();
         } else if (e.getCode() == KeyCode.S) {
-            joueur.seDeplaceBas();
+            joueur.deplacementBas();
         } else if (e.getCode() == KeyCode.D) {
-            joueur.seDeplaceDroite();
+            joueur.deplacementDroite();
         }
     }
 
