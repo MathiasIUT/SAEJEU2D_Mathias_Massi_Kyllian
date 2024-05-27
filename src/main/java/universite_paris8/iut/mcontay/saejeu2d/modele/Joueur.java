@@ -1,6 +1,7 @@
 package universite_paris8.iut.mcontay.saejeu2d.modele;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,12 +17,12 @@ public class Joueur {
     private DoubleProperty positionX;
     private DoubleProperty positionY;
 
-    private Joueur joueur ;
-    private JoueurVue joueurVue ;
+    private IntegerProperty direction ;
 
-    static final double MOVE_DISTANCE = 5;
+    static final double MOVE_DISTANCE = 1.5 ;
 
     public Joueur(Terrain terrain, double initialX, double initialY) {
+//        super(nom, ptsDeVie, id);
         this.terrain = terrain;
         positionX = new SimpleDoubleProperty(initialX);
         positionY = new SimpleDoubleProperty(initialY);
@@ -51,7 +52,17 @@ public class Joueur {
         positionY.set(y);
     }
 
+    public int getDirection() {
+        return direction.get();
+    }
 
+    public IntegerProperty directionProperty() {
+        return direction;
+    }
+
+    public void seDeplacer(IntegerProperty direction){
+
+    }
 
     public void seDeplaceHaut() {
         double newY = getPositionY() - MOVE_DISTANCE;
@@ -89,6 +100,7 @@ public class Joueur {
             System.out.println("Impossible de se déplacer vers la droite");
         }
     }
+
 
 
 }

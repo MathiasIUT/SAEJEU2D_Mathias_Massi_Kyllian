@@ -1,47 +1,75 @@
 package universite_paris8.iut.mcontay.saejeu2d.modele;
 
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import universite_paris8.iut.mcontay.saejeu2d.controleur.Controleur;
+import universite_paris8.iut.mcontay.saejeu2d.vue.JoueurVue;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class GameLoop {
 
+    private Timeline gameLoop ;
+    private int temps ;
+    private Set<KeyCode> keysPressed = new HashSet<>();
     private Joueur joueur ;
+    private JoueurVue joueurVue ;
 
-    private Controleur controleur ;
-
-    private double dernierMouvement ;
-
-    private final double DELAI_MOUVEMENT = 25_000_000 ;
-
-    private Timeline gameLoop;
-
-    public GameLoop () {
+    public GameLoop(Joueur joueur, JoueurVue joueurVue, Set<KeyCode> keysPressed) {
+        this.joueur = joueur;
+        this.joueurVue = joueurVue;
+        this.keysPressed = keysPressed;
     }
 
-    public void initAnimation() {
+    public void initGameLoop() {
         gameLoop = new Timeline();
+        temps = 0;
         gameLoop.setCycleCount(Timeline.INDEFINITE);
-
         KeyFrame kf = new KeyFrame(
-                // on définit le FPS (nbre de frame par seconde)
-                Duration.seconds(0.017),
-                // on définit ce qui se passe à chaque frame
-                // c'est un eventHandler d'ou le lambda
-                (ev ->{
+                Duration.millis(20),
+                (ev -> update()
+                // env.unTour();
+                // joueur.seDeplacer()
 
-//                        System.out.println("un tour");
-//                        joueur.setPositionX(joueur.getPositionX()+5);
-//                        joueur.setPositionY(joueur.getPositionY()+5);
-
-                })
+                )
         );
         gameLoop.getKeyFrames().add(kf);
         gameLoop.play();
     }
 
+    private void update() {
+        boolean enMouvement = false;
+
+
+        if (keysPressed.contains(KeyCode.Z)) {
+            joueur.seDeplaceHaut();
+            joueurVue.changerImage(KeyCode.Z);
+            enMouvement = true;
+        }
+        if (keysPressed.contains(KeyCode.Q)) {
+            joueur.seDeplaceGauche();
+            joueurVue.changerImage(KeyCode.Q);
+            enMouvement = true;
+        }
+        if (keysPressed.contains(KeyCode.S)) {
+            joueur.seDeplaceBas();
+            joueurVue.changerImage(KeyCode.S);
+            enMouvement = true;
+        }
+        if (keysPressed.contains(KeyCode.D)) {
+            joueur.seDeplaceDroite();
+            joueurVue.changerImage(KeyCode.D);
+            enMouvement = true;
+        }
+
+
+        double x = joueur.getPositionX();
+        double y = joueur.getPositionY();
+        joueurVue.VuePositionJoueur(x, y);
+    }
 
 
 }
