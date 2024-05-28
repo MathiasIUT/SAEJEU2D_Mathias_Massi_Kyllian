@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -14,7 +18,19 @@
       <Pane fx:id="pane" BorderPane.alignment="CENTER">
          <children>
             <TilePane fx:id="tilePane" layoutX="-1" layoutY="-1" maxHeight="896.0" maxWidth="1536.0" prefHeight="896.0" prefWidth="1536.0" />
-            <Pane fx:id="PanneauDeco" layoutX="-1" layoutY="-1" maxHeight="896.0" maxWidth="1536.0" prefHeight="896.0" prefWidth="1536.0" />
+            <Pane fx:id="PanneauDeco" layoutX="-1" layoutY="-1" maxHeight="896.0" maxWidth="1536.0" prefHeight="896.0" prefWidth="1536.0">
+               <children>
+                  <Pane fx:id="ptsDeVie" prefHeight="117.0" prefWidth="119.0">
+                     <children>
+                        <ImageView fitHeight="62.0" fitWidth="68.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@coeur-removebg-preview.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
          </children>
       </Pane>
    </center>

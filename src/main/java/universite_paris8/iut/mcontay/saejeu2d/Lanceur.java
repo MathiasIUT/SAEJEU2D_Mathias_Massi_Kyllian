@@ -18,7 +18,7 @@ public class Lanceur extends Application {
         Controleur controleur = fxmlLoader.getController();
         System.out.println(controleur);
 
-        Scene scene = new Scene(panePrincipal, 510, 510);
+        Scene scene = new Scene(panePrincipal, 1536, 896);
 
         scene.setOnKeyPressed(controleur::mouvement);
         scene.setOnKeyReleased(controleur::mouvement);
