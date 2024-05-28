@@ -56,15 +56,16 @@ public class Controleur implements Initializable {
     }
 
     public void mouvement(KeyEvent e) {
+//        if (e.getCode() != KeyCode.Z && e.getCode() != KeyCode.Q &&  e.getCode() != KeyCode.S && e.getCode() != KeyCode.D ){
+//            System.out.println("Appuie sur Z pour le haut, S pour le bas, Q pour la gauche, D pour la droite");
+//        }
         KeyCode keyCode = e.getCode();
         if (e.getEventType() == KeyEvent.KEY_PRESSED) {
             keysPressed.add(keyCode);
         } else if (e.getEventType() == KeyEvent.KEY_RELEASED) {
             keysPressed.remove(keyCode);
         }
-        if (e.getCode() != KeyCode.Z && e.getCode() != KeyCode.Q &&  e.getCode() != KeyCode.S &&  e.getCode() != KeyCode.D ){
-            System.out.println("Appuie sur Z pour le haut, S pour le bas, Q pour la gauche, D pour la droite");
-        }
+
         // calculer la nouvelle direction
         // joueur.changerDirection(nouvelledsirection)
 

@@ -9,11 +9,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1920.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.mcontay.saejeu2d.controleur.Controleur">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="896.0" prefWidth="1920.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.mcontay.saejeu2d.controleur.Controleur">
    <center>
       <Pane fx:id="pane" BorderPane.alignment="CENTER">
          <children>
-            <TilePane fx:id="tilePane" layoutX="-1" layoutY="-1" maxHeight="1024.0" maxWidth="1920.0" prefHeight="1024.0" prefWidth="1920.0" />
+            <TilePane fx:id="tilePane" layoutX="-1" layoutY="-1" maxHeight="896.0" maxWidth="1536.0" prefHeight="896.0" prefWidth="1536.0" />
+            <Pane fx:id="PanneauDeco" layoutX="-1" layoutY="-1" maxHeight="896.0" maxWidth="1536.0" prefHeight="896.0" prefWidth="1536.0" />
          </children>
       </Pane>
    </center>

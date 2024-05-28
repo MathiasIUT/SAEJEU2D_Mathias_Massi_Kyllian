@@ -52,13 +52,10 @@ public class Joueur {
         positionY.set(y);
     }
 
-    public int getDirection() {
-        return direction.get();
-    }
 
-    public IntegerProperty directionProperty() {
-        return direction;
-    }
+//    public IntegerProperty directionHaut() {
+//
+//    }
 
     public void seDeplacer(IntegerProperty direction){
 
