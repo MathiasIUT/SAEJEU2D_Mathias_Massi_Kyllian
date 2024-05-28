@@ -30,8 +30,11 @@ public class GameLoop {
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         KeyFrame kf = new KeyFrame(
                 Duration.millis(20),
-                (ev -> update())
-        );
+                (ev -> {
+                    //update();
+                    // env.unTour();
+                    joueur.deplacement();
+                }));
         gameLoop.getKeyFrames().add(kf);
         gameLoop.play();
     }
@@ -61,9 +64,6 @@ public class GameLoop {
             enMouvement = true;
         }
 
-        if (!enMouvement) {
-            joueurVue.reinitialiserAnimation(); // Réinitialise l'animation si pas en mouvement
-        }
 
         double x = joueur.getPositionX();
         double y = joueur.getPositionY();

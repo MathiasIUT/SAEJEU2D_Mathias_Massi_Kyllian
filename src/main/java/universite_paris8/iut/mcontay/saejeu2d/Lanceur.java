@@ -20,9 +20,9 @@ public class Lanceur extends Application {
 
         Scene scene = new Scene(panePrincipal, 510, 510);
 
-
         scene.setOnKeyPressed(controleur::mouvement);
-        stage.setTitle("");
+        scene.setOnKeyReleased(controleur::mouvement);
+        stage.setTitle("Jeu 2D");
         stage.setScene(scene);
         stage.show();
     }
