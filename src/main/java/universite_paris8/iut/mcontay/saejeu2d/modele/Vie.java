@@ -8,13 +8,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Joueur;
+import universite_paris8.iut.mcontay.saejeu2d.vue.VieVue;
 
 import java.io.IOException;
 
 public class Vie {
+    private VieVue vieVue;
     private Joueur joueur;
     private Terrain terrain;
     private Image[] imagesVie;
@@ -23,36 +27,28 @@ public class Vie {
     private Rectangle barre;
 
     public Vie(Pane pane, Joueur joueur) {
-        this.joueur = joueur;
-        this.terrain = terrain;
-
-        fond = new Rectangle(100, 10);
-        fond.setFill(Color.RED);
-
-        barre = new Rectangle(100, 10);
-        barre.setFill(Color.GREEN);
-
-        pane.getChildren().addAll(fond, barre);
-
-        joueur.vieProperty().addListener((observable, oldValue, newValue) -> {
-            double pourcentage = (double) newValue.intValue() / joueur.getVieMax();
-            barre.setWidth(pourcentage * 100);
-        });
-
-        initTimeline();
     }
 
-    private void initTimeline() {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(10), event -> {
-            int x = (int) joueur.getPositionX() / 32;
-            int y = (int) joueur.getPositionY() / 32;
-            if (terrain.getCodeTuile(x, y) == 3) {
-                joueur.setVie(joueur.getVie() - 35);
-            }
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+
+    public void infligerDegats(int degats) {
+        joueur.setVie(joueur.getVie() - degats);
+        System.out.println("Dégâts infligés: " + degats + ". Vie restante du joueur: " + joueur.getVie());
+        if (joueur.getVie() == 0) {
+            vieVue.afficherEcranMort();
+        }
     }
+
+//    private void initTimeline() {
+//        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+//            int x = (int) joueur.getPositionX();
+//            int y = (int) joueur.getPositionY() ;
+//            if (terrain.codesTuiles[((y)/32)][((x)/32)] == 3) {
+//                joueur.setVie(joueur.getVie() - 35);
+//            }
+//        }));
+//        timeline.setCycleCount(Timeline.INDEFINITE);
+//        timeline.play();
+//    }
 }
 //        this.joueur = joueur;
 //

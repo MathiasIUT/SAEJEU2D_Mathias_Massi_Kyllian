@@ -18,7 +18,7 @@ public class Combat {
     private int calculerDegats(Objet arme) {
         switch (arme.getNom()) {
             case "Épée":
-                return 10;
+                return 100;
             case "Bouclier":
                 return 5;
             default:

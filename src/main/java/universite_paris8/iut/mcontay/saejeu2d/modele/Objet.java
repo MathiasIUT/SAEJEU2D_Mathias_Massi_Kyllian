@@ -8,13 +8,15 @@ public class Objet {
     private String nom;
     private String description;
     private Image image;
-
+    private Vie vie;
+    private int degats;
 
 
     public Objet(String nom, String description, String imagePath) {
 
         this.nom = nom;
         this.description = description;
+        this.degats = degats;
         try {
             this.image = new Image(getClass().getResourceAsStream(imagePath));
         } catch (Exception e) {
@@ -25,7 +27,8 @@ public class Objet {
     }
 
 
-
+    public int getDegats() {return degats;}
+    public void setDamage(int degats) {this.degats = degats;}
     public Image getImage() {return image;}
     public void setImage(Image image) {
         this.image = image;
@@ -51,4 +54,6 @@ public class Objet {
     public String toString() {
         return nom + ": " + description;
     }
+
+
 }

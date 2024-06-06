@@ -3,10 +3,7 @@ package universite_paris8.iut.mcontay.saejeu2d.controleur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.mcontay.saejeu2d.modele.*;
-import universite_paris8.iut.mcontay.saejeu2d.vue.CombatVue;
-import universite_paris8.iut.mcontay.saejeu2d.vue.InventaireVue;
-import universite_paris8.iut.mcontay.saejeu2d.vue.JoueurVue;
-import universite_paris8.iut.mcontay.saejeu2d.vue.TerrainVue;
+import universite_paris8.iut.mcontay.saejeu2d.vue.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyCode;
@@ -45,6 +42,7 @@ public class Controleur implements Initializable {
     private Set<KeyCode> keysPressed = new HashSet<>();
 
     private Vie barreDeVie;
+    private VieVue vieVue;
     private GameLoop gameLoop;
 
     public Joueur getJoueur() {
@@ -57,7 +55,7 @@ public class Controleur implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         terrain = new Terrain();
-        joueur = new Joueur(terrain, "Joueur1",1, 256,  256,65);
+        joueur = new Joueur(terrain, "Joueur1",1, 256,  256,100);
         System.out.println(joueur.getVie());
         personnage = new Personnage(terrain,"pnj1", "100", "33",1, 100, 100);
         joueurVue = new JoueurVue(pane, joueur);
@@ -66,11 +64,13 @@ public class Controleur implements Initializable {
         this.gameLoop = new GameLoop(joueur);
         gameLoop.initGameLoop();
         inventaire = new Inventaire();
-        this.vue1 = new InventaireVue(pane,inventaire);
+        this.vue1 = new InventaireVue(pane,inventaire,joueur);
         this.vue1.afficherInventaire();
         combat = new Combat(joueur,inventaire);
         this.combatVue= new CombatVue(joueur,inventaire);
         barreDeVie = new Vie(pane, joueur);
+        this.vieVue= new VieVue(pane,joueur);
+
     }
 
     public void mouvement(KeyEvent e) {

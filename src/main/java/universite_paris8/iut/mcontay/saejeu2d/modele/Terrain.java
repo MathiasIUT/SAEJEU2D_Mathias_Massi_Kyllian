@@ -3,7 +3,7 @@ package universite_paris8.iut.mcontay.saejeu2d.modele;
 import universite_paris8.iut.mcontay.saejeu2d.controleur.Controleur;
 
 public class Terrain {
-    private int[][] codesTuiles = {
+    public int[][] codesTuiles = {
             {06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,03,03,03,03,03,03,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06,06},
             {06,06,06,06,06,06,06,06,06,06,06,07,07,06,06,06,06,06,06,06,06,06,06,03,03,03,03,03,06,06, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,06},
             {06,06,06,06,06,06,06,06,06,06,06,07,07,06,06,06,06,06,06,06,06,06,06,03,03,03,03,03,06,06, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,06},
@@ -59,17 +59,15 @@ public class Terrain {
         return codesTuiles[x][y];
     }
 
-    public boolean estAutorisee(double x, double y) {
-        return getCodeTuile((int) x,(int) y) != 3; // Supposons que la tuile avec le code 3 n'est pas autorisée.
-    }
 
-//    public boolean estAutorisee(double x, double y) {
-//        if (codesTuiles[(int)((y)/32)][(int)((x)/32)] == 3) {
-//            System.out.println("impossible");
-//            return false;
-//        } else if (x >= 0 && x < getLongueur() * 32 && y >= 0 && y < getHauteur() * 32) {
-//            return true;
-//        }
-//        return false;
-//    }
+
+    public boolean estAutorisee(double x, double y) {
+        if (codesTuiles[(int)((y)/32)][(int)((x)/32)] == 3) {
+            System.out.println("impossible");
+            return false;
+        } else if (x >= 0 && x < getLongueur() * 32 && y >= 0 && y < getHauteur() * 32) {
+            return true;
+        }
+        return false;
+    }
 }
