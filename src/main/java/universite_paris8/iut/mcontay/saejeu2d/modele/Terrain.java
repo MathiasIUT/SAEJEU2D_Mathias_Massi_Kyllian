@@ -52,13 +52,24 @@ public class Terrain {
         return codesTuiles.length;
     }
 
-    public boolean estAutorisee(double x, double y) {
-        if (codesTuiles[(int)((y)/32)][(int)((x)/32)] == 3) {
-            System.out.println("impossible");
-            return false;
-        } else if (x >= 0 && x < getLongueur() * 32 && y >= 0 && y < getHauteur() * 32) {
-            return true;
+    public int getCodeTuile(int x, int y) {
+        if (x < 0 || x >= codesTuiles.length || y < 0 || y >= codesTuiles[0].length) {
+            return -1; // Code de tuile invalide pour les positions hors du tableau.
         }
-        return false;
+        return codesTuiles[x][y];
     }
+
+    public boolean estAutorisee(double x, double y) {
+        return getCodeTuile((int) x,(int) y) != 3; // Supposons que la tuile avec le code 3 n'est pas autorisée.
+    }
+
+//    public boolean estAutorisee(double x, double y) {
+//        if (codesTuiles[(int)((y)/32)][(int)((x)/32)] == 3) {
+//            System.out.println("impossible");
+//            return false;
+//        } else if (x >= 0 && x < getLongueur() * 32 && y >= 0 && y < getHauteur() * 32) {
+//            return true;
+//        }
+//        return false;
+//    }
 }

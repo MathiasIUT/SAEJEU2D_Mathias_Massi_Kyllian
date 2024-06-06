@@ -4,8 +4,8 @@ public class Personnage extends Entite {
     private String ptsAttaque;
     private String ptsDefense;
 
-    public Personnage(String nom, String ptsDeVie, String ptsAttaque, String ptsDefense, int id, double initialX, double initialY) {
-        super(nom, ptsDeVie, id, initialX, initialY);
+    public Personnage(Terrain terrain, String nom, String ptsAttaque, String ptsDefense, int id, double initialX, double initialY) {
+        super(terrain, nom, id, initialX, initialY);
         this.ptsAttaque = ptsAttaque;
         this.ptsDefense = ptsDefense;
     }

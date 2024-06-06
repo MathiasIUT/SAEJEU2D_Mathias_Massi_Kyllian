@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import universite_paris8.iut.mcontay.saejeu2d.controleur.Controleur;
+import universite_paris8.iut.mcontay.saejeu2d.modele.Joueur;
 
 import java.io.IOException;
 
@@ -25,6 +26,7 @@ public class Lanceur extends Application {
         stage.setTitle("Jeu 2D");
         stage.setScene(scene);
         stage.show();
+
     }
 
     public static void main(String[] args) {

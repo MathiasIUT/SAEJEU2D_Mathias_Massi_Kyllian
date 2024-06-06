@@ -1,9 +1,12 @@
 package universite_paris8.iut.mcontay.saejeu2d.vue;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Joueur;
 
@@ -12,12 +15,15 @@ import java.io.IOException;
 public class JoueurVue {
 
     private ImageView spriteView;
+    private ImageView vieView;
     private Joueur joueur;
     private Image[] imagesMarcheBas;
     private Image[] imagesMarcheHaut;
     private Image[] imagesMarcheGauche;
     private Image[] imagesMarcheDroite;
     private Image[] imageDeboutFace;
+
+
 
     private int indexFrame = 0;
     private int frameCounter = 0;
@@ -66,11 +72,6 @@ public class JoueurVue {
         }
     }
 
-//    public void VuePositionJoueur(double x, double y) {
-//        joueur.setPositionX(x);
-//        joueur.setPositionY(y);
-//    }
-
     public void changerImage(KeyCode keyCode) {
         frameCounter++;
         if (frameCounter >= frameDelay) {
@@ -95,10 +96,11 @@ public class JoueurVue {
             }
         }
     }
-
     public void reinitialiserAnimation() {
         frameCounter = 0;
         indexFrame = 0;
         spriteView.setImage(imageDeboutFace[0]);
     }
+
+
 }

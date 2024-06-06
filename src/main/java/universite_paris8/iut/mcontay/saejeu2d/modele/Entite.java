@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class Entite {
     private String nom;
-    private String ptsDeVie;
+
     private int id;
     private DoubleProperty positionX;
     private DoubleProperty positionY;
@@ -18,9 +18,8 @@ public abstract class Entite {
 
     private static final double MOVE_DISTANCE = 5;
 
-    public Entite(Terrain terrain, String nom, String ptsDeVie, int id, double initialX, double initialY) {
+    public Entite(Terrain terrain, String nom, int id, double initialX, double initialY) {
         this.nom = nom;
-        this.ptsDeVie = ptsDeVie;
         this.id = id;
         this.positionX = new SimpleDoubleProperty(initialX);
         this.positionY = new SimpleDoubleProperty(initialY);
@@ -37,17 +36,12 @@ public abstract class Entite {
         return id;
     }
 
-    public String getPtsDeVie() {
-        return ptsDeVie;
-    }
 
     public DoubleProperty positionXProperty() {
         return positionX;
     }
 
-    public DoubleProperty positionYProperty() {
-        return positionY;
-    }
+    public DoubleProperty positionYProperty() {return positionY;}
 
     public double getPositionX() {
         return positionX.get();
