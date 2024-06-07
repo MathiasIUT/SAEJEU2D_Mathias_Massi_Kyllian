@@ -35,8 +35,8 @@ public class JoueurVue {
         chargerImages();
 
         spriteView = new ImageView(imagesMarcheBas[0]);
-        spriteView.setFitHeight(48);
-        spriteView.setFitWidth(48);
+        spriteView.setFitHeight(24);
+        spriteView.setFitWidth(24);
         spriteView.translateXProperty().bind(joueur.positionXProperty());
         spriteView.translateYProperty().bind(joueur.positionYProperty());
         pane.getChildren().add(spriteView);

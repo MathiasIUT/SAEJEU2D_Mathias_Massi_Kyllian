@@ -1,43 +1,38 @@
 package universite_paris8.iut.mcontay.saejeu2d.controleur;
 
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.mcontay.saejeu2d.modele.*;
 import universite_paris8.iut.mcontay.saejeu2d.vue.*;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.TilePane;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 public class Controleur implements Initializable {
     @FXML
-    private Pane pane;
-    @FXML
-    private TilePane tilePane;
+    private Pane paneJeu;
+
+    private Terrain terrain;
+    private TerrainVue terrainVue;
     @FXML
     private Pane ptsDeVie;
-
 
     private Inventaire inventaire;
     private InventaireVue vue1;
 
-
-    private Terrain terrain;
     private TerrainVue vue;
-
 
     private Joueur joueur;
     private JoueurVue joueurVue;
-    private Personnage personnage ;
-
+    private Personnage personnage;
     private Combat combat;
     private CombatVue combatVue;
-
 
     private Set<KeyCode> keysPressed = new HashSet<>();
 
@@ -45,32 +40,29 @@ public class Controleur implements Initializable {
     private VieVue vieVue;
     private GameLoop gameLoop;
 
-    public Joueur getJoueur() {
-        return this.joueur;
-    }
-    public Personnage getPersonnage() {
-        return  this.personnage ;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        terrain = new Terrain();
-        joueur = new Joueur(terrain, "Joueur1",1, 256,  256,100);
+        terrain = new Terrain("/universite_paris8/iut/mcontay/saejeu2d/jsonmappingv1.json");
+        try {
+            terrainVue = new TerrainVue(paneJeu, terrain);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        terrainVue.affichageVue();
+        joueur = new Joueur(terrain, "Joueur1", 1, 256, 256, 100);
         System.out.println(joueur.getVie());
-        personnage = new Personnage(terrain,"pnj1", "100", "33",1, 100, 100);
-        joueurVue = new JoueurVue(pane, joueur);
-        this.vue = new TerrainVue(tilePane, terrain);
-        this.vue.affichageVue();
+        personnage = new Personnage(terrain, "pnj1", "100", "33", 1, 100, 100);
+        joueurVue = new JoueurVue(paneJeu, joueur);
+
         this.gameLoop = new GameLoop(joueur);
         gameLoop.initGameLoop();
         inventaire = new Inventaire();
-        this.vue1 = new InventaireVue(pane,inventaire,joueur);
+        this.vue1 = new InventaireVue(paneJeu, inventaire, joueur);
         this.vue1.afficherInventaire();
-        combat = new Combat(joueur,inventaire);
-        this.combatVue= new CombatVue(joueur,inventaire);
-        barreDeVie = new Vie(pane, joueur);
-        this.vieVue= new VieVue(pane,joueur);
-
+        combat = new Combat(joueur, inventaire);
+        this.combatVue = new CombatVue(joueur, inventaire);
+        barreDeVie = new Vie(paneJeu, joueur);
+        this.vieVue = new VieVue(paneJeu, joueur);
     }
 
     public void mouvement(KeyEvent e) {
@@ -82,8 +74,15 @@ public class Controleur implements Initializable {
         }
     }
 
-    private void update() {
+    public Joueur getJoueur() {
+        return this.joueur;
+    }
 
+    public Personnage getPersonnage() {
+        return this.personnage;
+    }
+
+    private void update() {
         if (keysPressed.contains(KeyCode.Z)) {
             joueur.deplacementHaut();
             joueurVue.changerImage(KeyCode.Z);
@@ -100,7 +99,6 @@ public class Controleur implements Initializable {
             joueur.deplacementDroite();
             joueurVue.changerImage(KeyCode.D);
         }
-
     }
 
     public void keyPressed(KeyCode keyCode) {
@@ -116,7 +114,4 @@ public class Controleur implements Initializable {
         update();
         joueur.deplacementStop();
     }
-
-
-
 }

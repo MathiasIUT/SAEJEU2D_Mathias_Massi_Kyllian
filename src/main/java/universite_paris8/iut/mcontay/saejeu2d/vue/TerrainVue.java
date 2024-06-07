@@ -1,86 +1,67 @@
 package universite_paris8.iut.mcontay.saejeu2d.vue;
-import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Terrain;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.Pane;
+import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
+import universite_paris8.iut.mcontay.saejeu2d.modele.Terrain;
 
-public class TerrainVue  {
-    private Terrain Terrain;
-    private TilePane panneauJeu;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
-    public TerrainVue(TilePane panneauJeu, Terrain terrain) {
-        Terrain = terrain;
-        this.panneauJeu = panneauJeu;
+public class TerrainVue {
+    private static final int TILE_SIZE = 16; // Tile size is 16x16 pixels
+    private Pane paneJeu;
+    private Terrain terrain;
+    private Map<Integer, Image> tileImages;
+
+    public TerrainVue(Pane paneJeu, Terrain terrain) throws IOException {
+        this.paneJeu = paneJeu;
+        this.terrain = terrain;
+        loadTileImages();
     }
 
-    public void affichageVue () {
-        Image terre1 = new Image(String.valueOf(Lanceur.class.getResource("terre1.png")));
-        Image water1 = new Image(String.valueOf(Lanceur.class.getResource("water1.gif")));
-        Image water2 = new Image(String.valueOf(Lanceur.class.getResource("water2.gif")));
-        Image water3 = new Image(String.valueOf(Lanceur.class.getResource("water3.gif")));
-        Image pierre1 = new Image(String.valueOf(Lanceur.class.getResource("pierre1.png")));
-        Image pierre2 = new Image(String.valueOf(Lanceur.class.getResource("pierre2.png")));
-        Image pierre3 = new Image(String.valueOf(Lanceur.class.getResource("pierre3.png")));
-        Image pierre4 = new Image(String.valueOf(Lanceur.class.getResource("pierre4.png")));
-        Image pierre5 = new Image(String.valueOf(Lanceur.class.getResource("pierre5.png")));
-        Image pierre6 = new Image(String.valueOf(Lanceur.class.getResource("pierre6.png")));
-        Image pierre7 = new Image(String.valueOf(Lanceur.class.getResource("pierre7.png")));
+    private void loadTileImages() throws IOException {
+        tileImages = new HashMap<>();
+        // code tuiles de 0 à n, remplacer n avec le nombre de tiles si on change on en a 419 actuellement
+        for (int i = 0; i <= 419; i++) {
+            URL imageUrl = Lanceur.class.getResource("/universite_paris8/iut/mcontay/saejeu2d/map/tile_" + i + ".png");
+            tileImages.put(i+1, new Image(imageUrl.openStream()));
+        }
+    }
 
+    public void affichageVue() {
+        if (terrain.getSolLayer() != null) {
+            renderLayer(terrain.getSolLayer());
+        } else {
+            System.err.println("Sol layer is null.");
+        }
 
+        if (terrain.getDecoLayer() != null) {
+            renderLayer(terrain.getDecoLayer());
+        } else {
+            System.err.println("Deco layer is null.");
+        }
+    }
 
-
-
-        for (int i = 0; i < Terrain.getCodesTuiles().length; i++) {
-            for (int j = 0; j < Terrain.getCodesTuiles()[i].length; j++) {
-                switch (Terrain.getCodesTuiles()[i][j]) {
-                    case 1:
-                        ImageView imgpierre1 = new ImageView(pierre1);
-                        panneauJeu.getChildren().add(imgpierre1);
-                        break;
-                    case 2:
-                        ImageView imgterre1 = new ImageView(terre1);
-                        panneauJeu.getChildren().add(imgterre1);
-                        break;
-                    case 3:
-                        ImageView imgwater1 = new ImageView(water1);
-                        panneauJeu.getChildren().add(imgwater1);
-                        break;
-                    case 4:
-                        ImageView imgwater2 = new ImageView(water2);
-                        panneauJeu.getChildren().add(imgwater2);
-                        break;
-                    case 5:
-                        ImageView imgwater3 = new ImageView(water3);
-                        panneauJeu.getChildren().add(imgwater3);
-                        break;
-                    case 6:
-                        ImageView imgpierre2 = new ImageView(pierre2);
-                        panneauJeu.getChildren().add(imgpierre2);
-                        break;
-                    case 7:
-                        ImageView imgpierre3 = new ImageView(pierre3);
-                        panneauJeu.getChildren().add(imgpierre3);
-                        break;
-                    case 8:
-                        ImageView imgpierre4 = new ImageView(pierre4);
-                        panneauJeu.getChildren().add(imgpierre4);
-                        break;
-                    case 9:
-                        ImageView imgpierre5 = new ImageView(pierre5);
-                        panneauJeu.getChildren().add(imgpierre5);
-                        break;
-                    case 10:
-                        ImageView imgpierre6 = new ImageView(pierre6);
-                        panneauJeu.getChildren().add(imgpierre6);
-                        break;
-                    case 11:
-                        ImageView imgpierre7 = new ImageView(pierre7);
-                        panneauJeu.getChildren().add(imgpierre7);
-                        break;
-                }
+    private void renderLayer(int[][] layer) {
+        for (int i = 0; i < layer.length; i++) {
+            for (int j = 0; j < layer[i].length; j++) {
+                renderTile(layer[i][j], j, i);
             }
         }
     }
 
+    private void renderTile(int tileCode, int x, int y) {
+
+        Image tileImage = tileImages.get(tileCode);
+        if (tileImage != null) {
+            ImageView imageView = new ImageView(tileImage);
+            imageView.setX(x * TILE_SIZE);
+            imageView.setY(y * TILE_SIZE);
+            paneJeu.getChildren().add(imageView);
+        }
+    }
 }
