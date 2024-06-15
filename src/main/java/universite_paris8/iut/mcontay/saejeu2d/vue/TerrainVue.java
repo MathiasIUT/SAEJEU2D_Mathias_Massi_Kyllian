@@ -26,7 +26,7 @@ public class TerrainVue {
     private void loadTileImages() throws IOException {
         tileImages = new HashMap<>();
         // code tuiles de 0 à n, remplacer n avec le nombre de tiles si on change on en a 419 actuellement
-        for (int i = 0; i <= 419; i++) {
+        for (int i = 0; i <= 409; i++) {
             URL imageUrl = Lanceur.class.getResource("/universite_paris8/iut/mcontay/saejeu2d/map/tile_" + i + ".png");
             tileImages.put(i+1, new Image(imageUrl.openStream()));
         }

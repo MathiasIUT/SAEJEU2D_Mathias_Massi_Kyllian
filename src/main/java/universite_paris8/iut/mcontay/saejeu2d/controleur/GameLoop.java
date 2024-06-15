@@ -5,7 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Joueur;
-import universite_paris8.iut.mcontay.saejeu2d.vue.JoueurVue;
+//import universite_paris8.iut.mcontay.saejeu2d.vue.JoueurVue;
 
 import java.util.HashSet;
 import java.util.Set;

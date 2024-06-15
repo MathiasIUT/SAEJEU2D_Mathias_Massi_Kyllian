@@ -1,9 +1,10 @@
 package universite_paris8.iut.mcontay.saejeu2d.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Chunk {
-    private List<Integer> data;
+    private List<Integer> data = new ArrayList<>();
     private int height;
     private int width;
     private int x;

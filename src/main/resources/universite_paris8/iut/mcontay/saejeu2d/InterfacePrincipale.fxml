@@ -18,7 +18,7 @@
       <Pane fx:id="paneJeu" BorderPane.alignment="CENTER">
          <children>
             <TilePane fx:id="tilePane" layoutX="-1" layoutY="-1" maxHeight="960.0" maxWidth="1280.0" prefHeight="960.0" prefWidth="1280.0" />
-            <Pane fx:id="PanneauDeco" layoutX="-1" layoutY="-1" maxHeight="960.0" maxWidth="1280.0" prefHeight="960.0" prefWidth="1536.0">
+            <Pane fx:id="PanneauDeco" layoutX="-1" layoutY="-1" maxHeight="960.0" maxWidth="1280.0" prefHeight="960.0" prefWidth="1280.0">
                <children>
                   <Pane fx:id="ptsDeVie" prefHeight="117.0" prefWidth="119.0">
                      <children>

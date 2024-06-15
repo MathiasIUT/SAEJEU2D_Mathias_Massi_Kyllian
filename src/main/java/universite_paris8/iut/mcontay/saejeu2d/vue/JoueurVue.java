@@ -35,8 +35,8 @@ public class JoueurVue {
         chargerImages();
 
         spriteView = new ImageView(imagesMarcheBas[0]);
-        spriteView.setFitHeight(24);
-        spriteView.setFitWidth(24);
+        spriteView.setFitHeight(16);
+        spriteView.setFitWidth(16);
         spriteView.translateXProperty().bind(joueur.positionXProperty());
         spriteView.translateYProperty().bind(joueur.positionYProperty());
         pane.getChildren().add(spriteView);
@@ -49,24 +49,31 @@ public class JoueurVue {
     private void chargerImages() {
         try {
             imagesMarcheBas = new Image[]{
-                    new Image(Lanceur.class.getResource("joueurAvanceFace.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueurAvanceFace2.png").openStream())
+                    new Image(Lanceur.class.getResource("joueur/joueurDeboutFace.png").openStream()),
+                    new Image(Lanceur.class.getResource("joueur/joueurAvanceFace2.png").openStream()),
+                    new Image(Lanceur.class.getResource("joueur/joueurAvanceFace.png").openStream())
             };
             imagesMarcheHaut = new Image[]{
-                    new Image(Lanceur.class.getResource("joueurDeboutDos.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueurAvanceDos.png").openStream())
+                    new Image(Lanceur.class.getResource("joueur/joueurDeboutDos.png").openStream()),
+                    new Image(Lanceur.class.getResource("joueur/joueurAvanceDos.png").openStream()),
+                    new Image(Lanceur.class.getResource("joueur/joueurAvanceDos2.png").openStream())
             };
             imagesMarcheGauche = new Image[]{
-                    new Image(Lanceur.class.getResource("joueurDeboutGauche.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueurAvanceGauche.png").openStream())
+                    new Image(Lanceur.class.getResource("joueur/joueurDeboutGauche.png").openStream()),
+                    new Image(Lanceur.class.getResource("joueur/joueurAvanceGauche.png").openStream()),
+                    new Image(Lanceur.class.getResource("joueur/joueurAvanceGauche2.png").openStream())
             };
             imagesMarcheDroite = new Image[]{
-                    new Image(Lanceur.class.getResource("joueurAvanceDroite.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueurDeboutDroite.png").openStream())
+                    new Image(Lanceur.class.getResource("joueur/joueurDeboutDroit.png").openStream()),
+                    new Image(Lanceur.class.getResource("joueur/joueurAvanceDroite.png").openStream()),
+                    new Image(Lanceur.class.getResource("joueur/joueurAvanceDroite2.png").openStream())
             };
-            imageDeboutFace = new Image[]{
-                    new Image(Lanceur.class.getResource("joueurDeboutFace.png").openStream())
-            };
+//            imagesAttaque = new Image[]{
+//                    new Image(Lanceur.class.getResource("joueurAttaqueHaut.png").openStream()),
+//                    new Image(Lanceur.class.getResource("joueurAttaqueBas.png").openStream()),
+//                    new Image(Lanceur.class.getResource("joueurAttaqueDroite.png").openStream()),
+//                    new Image(Lanceur.class.getResource("joueurAttaqueGauche.png").openStream())
+//            };
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

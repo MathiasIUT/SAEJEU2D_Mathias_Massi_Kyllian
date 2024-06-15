@@ -42,14 +42,14 @@ public class Controleur implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        terrain = new Terrain("/universite_paris8/iut/mcontay/saejeu2d/jsonmappingv1.json");
+        terrain = new Terrain("/universite_paris8/iut/mcontay/saejeu2d/jsonmapsurfacefinal.json");
         try {
             terrainVue = new TerrainVue(paneJeu, terrain);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         terrainVue.affichageVue();
-        joueur = new Joueur(terrain, "Joueur1", 1, 256, 256, 100);
+        joueur = new Joueur(terrain, "Joueur1", 1, 400, 450, 100);
         System.out.println(joueur.getVie());
         personnage = new Personnage(terrain, "pnj1", "100", "33", 1, 100, 100);
         joueurVue = new JoueurVue(paneJeu, joueur);

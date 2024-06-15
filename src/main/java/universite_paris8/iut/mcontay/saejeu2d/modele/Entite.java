@@ -16,7 +16,7 @@ public abstract class Entite {
 
     private Terrain terrain;
 
-    private static final double MOVE_DISTANCE = 5;
+    private static final double MOVE_DISTANCE = 1;
 
     public Entite(Terrain terrain, String nom, int id, double initialX, double initialY) {
         this.nom = nom;
@@ -105,7 +105,7 @@ public abstract class Entite {
 
     public void seDeplaceHaut() {
         double newY = getPositionY() - MOVE_DISTANCE;
-        if (newY >= 0 && terrain.estAutorisee(getPositionX() + 24, newY)) {
+        if (newY >= 0 && terrain.estAutorisee(getPositionX() + 8, newY)) {
             if (terrain.estAutorisee(getPositionX(), newY)) {
                 setPositionY(newY);
             } else {
@@ -116,7 +116,7 @@ public abstract class Entite {
 
     public void seDeplaceGauche() {
         double newX = getPositionX() - MOVE_DISTANCE;
-        if (terrain.estAutorisee(newX, getPositionY() + 48)) {
+        if (terrain.estAutorisee(newX, getPositionY() + 16)) {
             setPositionX(newX);
         } else {
             System.out.println("Impossible de se déplacer vers la gauche");
@@ -125,7 +125,7 @@ public abstract class Entite {
 
     public void seDeplaceBas() {
         double newY = getPositionY() + MOVE_DISTANCE;
-        if (terrain.estAutorisee(getPositionX() + 24  , newY + 48)) {
+        if (terrain.estAutorisee(getPositionX() + 8  , newY + 16)) {
             setPositionY(newY);
         } else {
             System.out.println("Impossible de se déplacer vers le bas");
@@ -134,7 +134,7 @@ public abstract class Entite {
 
     public void seDeplaceDroite() {
         double newX = getPositionX() + MOVE_DISTANCE;
-        if (terrain.estAutorisee(newX + 48, getPositionY() + 48)) {
+        if (terrain.estAutorisee(newX + 16, getPositionY() + 16)) {
             setPositionX(newX);
         } else {
             System.out.println("Impossible de se déplacer vers la droite");
