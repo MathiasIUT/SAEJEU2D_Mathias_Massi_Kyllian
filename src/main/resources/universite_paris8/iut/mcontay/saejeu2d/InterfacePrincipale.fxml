@@ -8,25 +8,13 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1280.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.mcontay.saejeu2d.controleur.Controleur">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="896.0" prefWidth="1920.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.mcontay.saejeu2d.controleur.Controleur">
    <center>
-      <Pane fx:id="paneJeu" BorderPane.alignment="CENTER">
+      <Pane fx:id="pane" BorderPane.alignment="CENTER">
          <children>
-            <TilePane fx:id="tilePane" layoutX="-1" layoutY="-1" maxHeight="960.0" maxWidth="1280.0" prefHeight="960.0" prefWidth="1280.0" />
-            <Pane fx:id="PanneauDeco" layoutX="-1" layoutY="-1" maxHeight="960.0" maxWidth="1280.0" prefHeight="960.0" prefWidth="1280.0">
-               <children>
-                  <Pane fx:id="ptsDeVie" prefHeight="117.0" prefWidth="119.0">
-                     <children>
-                        <ImageView fitHeight="62.0" fitWidth="68.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
-                        </ImageView>
-                     </children>
-                  </Pane>
-               </children>
+            <TilePane fx:id="tilePane" layoutX="-1" layoutY="-1" maxHeight="896.0" maxWidth="1536.0" prefHeight="896.0" prefWidth="1536.0" />
+            <Pane fx:id="PanneauDeco" layoutX="-1" layoutY="-1" maxHeight="896.0" maxWidth="1536.0" prefHeight="896.0" prefWidth="1536.0">
             </Pane>
          </children>
       </Pane>

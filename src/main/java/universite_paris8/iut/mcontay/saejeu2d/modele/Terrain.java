@@ -1,7 +1,6 @@
 package universite_paris8.iut.mcontay.saejeu2d.modele;
 
 import universite_paris8.iut.mcontay.saejeu2d.util.JsonLoader;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,8 +59,8 @@ public boolean estAutorisee(double x, double y) {
     if (tileX < 0 || tileX >= solLayer.length || tileY < 0 || tileY >= solLayer[0].length) {
         return false;
     }
-    System.out.println(nonPraticables);
-    System.out.println(decoLayer[tileX][tileY]);
+//    System.out.println(nonPraticables);
+//    System.out.println(decoLayer[tileX][tileY]);
     if (nonPraticables.contains(decoLayer[tileX][tileY]) || nonPraticables.contains(solLayer[tileX][tileY])) {
         System.out.println("impossible de se déplacer ici");
         return false;

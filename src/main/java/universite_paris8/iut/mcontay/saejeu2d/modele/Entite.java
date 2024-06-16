@@ -4,44 +4,54 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.shape.Rectangle;
 
 public abstract class Entite {
-    private String nom;
 
-    private int id;
+    private String nom;
+    private IntegerProperty ptsDeVie;
     private DoubleProperty positionX;
     private DoubleProperty positionY;
     private IntegerProperty direction;
-    private IntegerProperty nouvelleDirection;
+    protected Terrain terrain;
+    private Environnement environnement;
+    private int id;
+    protected int moveDistance;
 
-    private Terrain terrain;
-
-    private static final double MOVE_DISTANCE = 1;
-
-    public Entite(Terrain terrain, String nom, int id, double initialX, double initialY) {
+    public Entite(Environnement environnement, Terrain terrain, String nom, int ptsDeVie, double initialX, double initialY, int id, int moveDistance) {
         this.nom = nom;
-        this.id = id;
+        this.ptsDeVie = new SimpleIntegerProperty(ptsDeVie);
         this.positionX = new SimpleDoubleProperty(initialX);
         this.positionY = new SimpleDoubleProperty(initialY);
         this.direction = new SimpleIntegerProperty(0);
-        this.nouvelleDirection = new SimpleIntegerProperty(0);
-        this.terrain = terrain;
+        this.environnement = environnement;
+        this.id = id;
+        this.moveDistance = moveDistance;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public int getId() {
-        return id;
+    public IntegerProperty ptsDeVieProperty() {
+        return ptsDeVie;
     }
 
+    public int getPtsDeVie() {
+        return ptsDeVie.get();
+    }
+
+    public void setPtsDeVie(int ptsDeVie) {
+        this.ptsDeVie.set(Math.max(ptsDeVie, 0));
+    }
 
     public DoubleProperty positionXProperty() {
         return positionX;
     }
 
-    public DoubleProperty positionYProperty() {return positionY;}
+    public DoubleProperty positionYProperty() {
+        return positionY;
+    }
 
     public double getPositionX() {
         return positionX.get();
@@ -71,16 +81,16 @@ public abstract class Entite {
         this.direction.set(direction);
     }
 
-    public IntegerProperty nouvelleDirectionProperty() {
-        return nouvelleDirection;
+    public Terrain getTerrain() {
+        return terrain;
     }
 
-    public int getNouvelleDirection() {
-        return nouvelleDirection.get();
+    public int getId() {
+        return id;
     }
 
-    public void setNouvelleDirection(int direction) {
-        this.nouvelleDirection.set(direction);
+    public Environnement getEnvironnement() {
+        return environnement;
     }
 
     public void deplacementHaut() {
@@ -103,10 +113,15 @@ public abstract class Entite {
         setDirection(0);
     }
 
+    public void enleverPV(int enleve) {
+        setPtsDeVie(getPtsDeVie() - enleve);
+        System.out.println(nom + " a perdu " + enleve + " points de vie. Il lui reste " + getPtsDeVie() + " points de vie.");
+    }
+
     public void seDeplaceHaut() {
-        double newY = getPositionY() - MOVE_DISTANCE;
-        if (newY >= 0 && terrain.estAutorisee(getPositionX() + 8, newY)) {
-            if (terrain.estAutorisee(getPositionX(), newY)) {
+        double newY = getPositionY() - moveDistance;
+        if (newY >= 0 && environnement.getTerrain().estAutorisee(getPositionX() + 8, newY)) {
+            if (environnement.getTerrain().estAutorisee(getPositionX(), newY)) {
                 setPositionY(newY);
             } else {
                 System.out.println("Impossible de se déplacer vers le haut");
@@ -115,8 +130,8 @@ public abstract class Entite {
     }
 
     public void seDeplaceGauche() {
-        double newX = getPositionX() - MOVE_DISTANCE;
-        if (terrain.estAutorisee(newX, getPositionY() + 16)) {
+        double newX = getPositionX() - moveDistance;
+        if (environnement.getTerrain().estAutorisee(newX, getPositionY() + 16)) {
             setPositionX(newX);
         } else {
             System.out.println("Impossible de se déplacer vers la gauche");
@@ -124,8 +139,8 @@ public abstract class Entite {
     }
 
     public void seDeplaceBas() {
-        double newY = getPositionY() + MOVE_DISTANCE;
-        if (terrain.estAutorisee(getPositionX() + 8  , newY + 16)) {
+        double newY = getPositionY() + moveDistance;
+        if (environnement.getTerrain().estAutorisee(getPositionX() + 8, newY + 16)) {
             setPositionY(newY);
         } else {
             System.out.println("Impossible de se déplacer vers le bas");
@@ -133,36 +148,26 @@ public abstract class Entite {
     }
 
     public void seDeplaceDroite() {
-        double newX = getPositionX() + MOVE_DISTANCE;
-        if (terrain.estAutorisee(newX + 16, getPositionY() + 16)) {
+        double newX = getPositionX() + moveDistance;
+        if (environnement.getTerrain().estAutorisee(newX + 16, getPositionY() + 16)) {
             setPositionX(newX);
         } else {
             System.out.println("Impossible de se déplacer vers la droite");
         }
     }
 
+//    public boolean enCollision(Rectangle hitbox) {
+//        double deltaX = hitbox.getX() - this.getPositionX();
+//        double deltaY = hitbox.getY() - this.getPositionY();
+//        return Math.abs(deltaX) < 16 && Math.abs(deltaY) < 16; // Taille de la sprite (16*16)
+//    }
+
     public void deplacer() {
         switch (getDirection()) {
-            case 0:
-                break;
-            case 1:
-                seDeplaceHaut();
-                break;
-            case 2:
-                seDeplaceDroite();
-                break;
-            case 3:
-                seDeplaceBas();
-                break;
-            case 4:
-                seDeplaceGauche();
-                break;
-        }
-    }
-
-    public void changerDirection() {
-        if (getNouvelleDirection() != getDirection()) {
-            setDirection(getNouvelleDirection());
+            case 1 -> seDeplaceHaut();
+            case 2 -> seDeplaceDroite();
+            case 3 -> seDeplaceBas();
+            case 4 -> seDeplaceGauche();
         }
     }
 }

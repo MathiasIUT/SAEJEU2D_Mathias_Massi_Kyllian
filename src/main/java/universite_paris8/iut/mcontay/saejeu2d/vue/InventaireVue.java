@@ -1,70 +1,115 @@
 package universite_paris8.iut.mcontay.saejeu2d.vue;
 
+import javafx.collections.ListChangeListener;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Inventaire;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Joueur;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Objet;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Vie;
+import universite_paris8.iut.mcontay.saejeu2d.modele.*;
 
 public class InventaireVue {
-    private Vie vie;
+    private Environnement environnement;
     private Inventaire inventaire;
     private Pane pane;
-    private Joueur joueur;
 
-    public InventaireVue(Pane pane, Inventaire inventaire, Joueur joueur) {
+    private Epee epee;
+    private Joueur joueur;
+    private Monstre monstre;
+    private VBox inventaireBox;
+
+    public InventaireVue(Pane pane, Inventaire inventaire, Joueur joueur, Epee epee, Environnement environnement) {
         this.pane = pane;
         this.inventaire = inventaire;
         this.joueur = joueur;
+        this.epee = epee;
+        this.environnement = environnement;
+        this.monstre = environnement.getMonstre();
+
+        this.inventaire.getObjets().addListener((ListChangeListener<? super Objet>) change -> {
+            while (change.next()) {
+                if (change.wasAdded()) {
+                    for (Objet nouvelObjet : change.getAddedSubList()) {
+                        afficherObjet(nouvelObjet);
+                    }
+                } else if (change.wasRemoved()) {
+                    for (Objet ancienObjet : change.getRemoved()) {
+                        inventaire.retirerObjet(ancienObjet);
+                    }
+                }
+            }
+        });
+
+        inventaireBox = new VBox(10);
+        inventaireBox.setLayoutX(0);
+        inventaireBox.setLayoutY(10);
+        inventaireBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 10; -fx-border-color: white; -fx-border-width: 2;");
+        pane.getChildren().add(inventaireBox);
     }
 
     public void afficherInventaire() {
-        Objet epee = new Objet("Épée", "Une épée tranchante", "/universite_paris8/iut/mcontay/saejeu2d/Épée.png");
-        Objet bouclier = new Objet("Bouclier", "Un bouclier robuste", "/universite_paris8/iut/mcontay/saejeu2d/Bouclier.png");
+        inventaireBox.getChildren().clear();
+        for (Objet objet : inventaire.getObjets()) {
+            afficherObjet(objet);
+        }
 
-        inventaire.ajouterObjet(epee);
-        inventaire.ajouterObjet(bouclier);
-
-        afficherObjet(epee, 50, 50);
-        afficherObjet(bouclier, 80, 50);
-
+        if (!pane.getChildren().contains(inventaireBox)) {
+            pane.getChildren().add(inventaireBox);
+        }
+        inventaireBox.setVisible(true);
     }
 
-    private void afficherObjet(Objet objet, double x, double y) {
+    public void masquerInventaire() {
+        inventaireBox.setVisible(false);
+    }
+
+    private void afficherObjet(Objet objet) {
         ImageView imageView = new ImageView(objet.getImage());
         imageView.setFitHeight(32);
         imageView.setFitWidth(32);
-        imageView.setLayoutX(x);
-        imageView.setLayoutY(y);
-        pane.getChildren().add(imageView);
         imageView.setOnMouseClicked(event -> utiliserObjet(objet));
+
+        Text nomObjet = new Text(objet.getNom());
+        nomObjet.setFill(Color.WHITE);
+        nomObjet.setFont(Font.font("Verdana", 14));
+
+        VBox itemBox = new VBox(imageView, nomObjet);
+        itemBox.setStyle("-fx-padding: 5; -fx-border-color: white; -fx-border-width: 1;");
+        inventaireBox.getChildren().add(itemBox);
     }
 
     public void utiliserObjet(Objet objet) {
-        System.out.println("Objet utilisé: " + objet.getNom());
-        if (objet.getDegats() > 0) {
-            vie.infligerDegats(objet.getDegats());
+        if (!inventaire.contientObjet(objet)) {
+            System.out.println("Vous devez ramasser l'objet avant de l'utiliser.");
+            return;
         }
 
+        System.out.println("Objet utilisé: " + objet.getNom());
+        if (objet instanceof Epee) {
+            if (joueur.estProche(monstre)) {
+                monstre.enleverPV(objet.getDegats());
+                if (monstre.getPtsDeVie() <= 0) {
+                    monstre.setEstMort(true);
+                    environnement.supprimerEntiteParId(monstre.getId());
+                }
+            } else {
+                System.out.println("Le monstre est trop loin pour être attaqué.");
+            }
+        } else if (objet instanceof Bouclier) {
+            joueur.ajouterPtsDeVie(25);
+            updateInventaireAffichage();
+        }
     }
 
-//    private void afficherEcranMort() {
-//        Rectangle ecranNoir = new Rectangle(pane.getWidth(), pane.getHeight(), Color.BLACK);
-//        ecranNoir.setOpacity(0.7);
-//        ecranNoir.widthProperty().bind(pane.widthProperty());
-//        ecranNoir.heightProperty().bind(pane.heightProperty());
-//        pane.getChildren().add(ecranNoir);
-//        Text texteMort = new Text("You are Dead");
-//        texteMort.setFill(Color.RED);
-//        texteMort.setFont(Font.font("Verdana", 50));
-//        texteMort.xProperty().bind(pane.widthProperty().subtract(texteMort.getLayoutBounds().getWidth()).divide(3));
-//        texteMort.yProperty().bind(pane.heightProperty().subtract(texteMort.getLayoutBounds().getHeight()).divide(3).add(texteMort.getFont().getSize()));
-//        pane.getChildren().add(texteMort);
-//    }
-}
+    private void updateInventaireAffichage() {
+        inventaireBox.getChildren().clear();
+        for (Objet objet : inventaire.getObjets()) {
+            afficherObjet(objet);
+        }
+    }
 
+    public VBox getInventaireBox() {
+        return inventaireBox;
+    }
+}

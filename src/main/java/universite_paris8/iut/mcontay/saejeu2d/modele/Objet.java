@@ -1,19 +1,20 @@
 package universite_paris8.iut.mcontay.saejeu2d.modele;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 
 public class Objet {
     private String nom;
     private String description;
+    private Terrain terrain;
     private Image image;
-    private Vie vie;
     private int degats;
+    private double positionX;
+    private double positionY;
 
-
-    public Objet(String nom, String description, String imagePath) {
-
+    public Objet(String nom, String description, Terrain terrain, int degats, String imagePath, double x, double y) {
+        this.terrain = terrain;
+        this.positionX = x;
+        this.positionY = y;
         this.nom = nom;
         this.description = description;
         this.degats = degats;
@@ -21,15 +22,22 @@ public class Objet {
             this.image = new Image(getClass().getResourceAsStream(imagePath));
         } catch (Exception e) {
             System.out.println("Erreur lors du chargement de l'image : " + e.getMessage());
-            this.image = null; // ou une image par défaut
+            this.image = null;
         }
-
     }
 
+    public int getDegats() {
+        return degats;
+    }
 
-    public int getDegats() {return degats;}
-    public void setDamage(int degats) {this.degats = degats;}
-    public Image getImage() {return image;}
+    public void setDegats(int degats) {
+        this.degats = degats;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
     public void setImage(Image image) {
         this.image = image;
     }
@@ -40,6 +48,22 @@ public class Objet {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public void setPositionX(double positionX) {
+        this.positionX = positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
+    }
+
+    public void setPositionY(double positionY) {
+        this.positionY = positionY;
     }
 
     public String getDescription() {
@@ -54,6 +78,4 @@ public class Objet {
     public String toString() {
         return nom + ": " + description;
     }
-
-
 }

@@ -22,7 +22,7 @@ public class Lanceur extends Application {
 
         scene.setOnKeyPressed(controleur::mouvement);
         scene.setOnKeyReleased(controleur::mouvement);
-        stage.setTitle("Jeu 2D");
+        stage.setTitle("Paris Adventure");
         stage.setScene(scene);
         stage.show();
     }

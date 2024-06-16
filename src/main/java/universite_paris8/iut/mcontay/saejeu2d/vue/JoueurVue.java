@@ -1,37 +1,34 @@
 package universite_paris8.iut.mcontay.saejeu2d.vue;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
+import universite_paris8.iut.mcontay.saejeu2d.modele.Environnement;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Joueur;
+import universite_paris8.iut.mcontay.saejeu2d.modele.Monstre;
 
 import java.io.IOException;
 
 public class JoueurVue {
 
     private ImageView spriteView;
-    private ImageView vieView;
-    private Joueur joueur;
+    private Environnement env;
     private Image[] imagesMarcheBas;
     private Image[] imagesMarcheHaut;
     private Image[] imagesMarcheGauche;
     private Image[] imagesMarcheDroite;
-    private Image[] imageDeboutFace;
-
-
+    private Image[] imagesAttaque;
 
     private int indexFrame = 0;
-    private int frameCounter = 0;
-    private int frameDelay = 5; // Délai entre les changements d'images
+    private int frameDelay = 5;
+    private boolean isAttacking = false;
 
-    public JoueurVue(Pane pane, Joueur joueur) {
-        this.joueur = joueur;
-
+    public JoueurVue(Pane pane, Environnement env) {
+        this.env = env;
+        Joueur joueur = env.getJoueur();
         chargerImages();
 
         spriteView = new ImageView(imagesMarcheBas[0]);
@@ -42,72 +39,94 @@ public class JoueurVue {
         pane.getChildren().add(spriteView);
 
         joueur.directionProperty().addListener((observable, oldValue, newValue) -> {
-            changerImage(KeyCode.getKeyCode(newValue.toString()));
+            if (!isAttacking) {
+                changerImage((int) newValue);
+            }
+        });
+
+        env.nbToursProperty().addListener((observable, oldValue, newValue) -> {
+            if ((int) newValue % frameDelay == 0 && !isAttacking) {
+                indexFrame = (indexFrame + 1) % 3;
+                changerImage(joueur.getDirection());
+            }
+        });
+
+        joueur.estMortProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                supprimerVue();
+            }
         });
     }
 
     private void chargerImages() {
         try {
             imagesMarcheBas = new Image[]{
-                    new Image(Lanceur.class.getResource("joueur/joueurDeboutFace.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueur/joueurAvanceFace2.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueur/joueurAvanceFace.png").openStream())
+                    new Image(Lanceur.class.getResource("Joueur/joueurDeboutFace.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceFace2.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceFace.png").openStream())
             };
             imagesMarcheHaut = new Image[]{
-                    new Image(Lanceur.class.getResource("joueur/joueurDeboutDos.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueur/joueurAvanceDos.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueur/joueurAvanceDos2.png").openStream())
+                    new Image(Lanceur.class.getResource("Joueur/joueurDeboutDos.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceDos.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceDos2.png").openStream())
             };
             imagesMarcheGauche = new Image[]{
-                    new Image(Lanceur.class.getResource("joueur/joueurDeboutGauche.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueur/joueurAvanceGauche.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueur/joueurAvanceGauche2.png").openStream())
+                    new Image(Lanceur.class.getResource("Joueur/joueurDeboutGauche.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceGauche.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceGauche2.png").openStream())
             };
             imagesMarcheDroite = new Image[]{
-                    new Image(Lanceur.class.getResource("joueur/joueurDeboutDroit.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueur/joueurAvanceDroite.png").openStream()),
-                    new Image(Lanceur.class.getResource("joueur/joueurAvanceDroite2.png").openStream())
+                    new Image(Lanceur.class.getResource("Joueur/joueurDeboutDroit.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceDroite.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceDroite2.png").openStream())
             };
-//            imagesAttaque = new Image[]{
-//                    new Image(Lanceur.class.getResource("joueurAttaqueHaut.png").openStream()),
-//                    new Image(Lanceur.class.getResource("joueurAttaqueBas.png").openStream()),
-//                    new Image(Lanceur.class.getResource("joueurAttaqueDroite.png").openStream()),
-//                    new Image(Lanceur.class.getResource("joueurAttaqueGauche.png").openStream())
-//            };
+            imagesAttaque = new Image[]{
+                    new Image(Lanceur.class.getResource("Joueur/joueurAttaqueHaut.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAttaqueBas.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAttaqueDroite.png").openStream()),
+                    new Image(Lanceur.class.getResource("Joueur/joueurAttaqueGauche.png").openStream())
+            };
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void changerImage(KeyCode keyCode) {
-        frameCounter++;
-        if (frameCounter >= frameDelay) {
-            frameCounter = 0;
-            indexFrame = (indexFrame + 1) % 2;
-        }
-
-        if (keyCode != null) {
-            switch (keyCode) {
-                case Z:
-                    spriteView.setImage(imagesMarcheHaut[indexFrame]);
-                    break;
-                case S:
-                    spriteView.setImage(imagesMarcheBas[indexFrame]);
-                    break;
-                case Q:
-                    spriteView.setImage(imagesMarcheGauche[indexFrame]);
-                    break;
-                case D:
-                    spriteView.setImage(imagesMarcheDroite[indexFrame]);
-                    break;
-            }
+    public void changerImage(int direction) {
+        switch (direction) {
+            case 1 -> spriteView.setImage(imagesMarcheHaut[indexFrame]);
+            case 2 -> spriteView.setImage(imagesMarcheDroite[indexFrame]);
+            case 3 -> spriteView.setImage(imagesMarcheBas[indexFrame]);
+            case 4 -> spriteView.setImage(imagesMarcheGauche[indexFrame]);
+            default -> spriteView.setImage(imagesMarcheBas[0]);
         }
     }
-    public void reinitialiserAnimation() {
-        frameCounter = 0;
-        indexFrame = 0;
-        spriteView.setImage(imageDeboutFace[0]);
+
+    public void VueAttaque(int direction) {
+        isAttacking = true;
+        switch (direction) {
+            case 1 -> spriteView.setImage(imagesAttaque[0]);
+            case 2 -> spriteView.setImage(imagesAttaque[2]);
+            case 3 -> spriteView.setImage(imagesAttaque[1]);
+            case 4 -> spriteView.setImage(imagesAttaque[3]);
+            default -> spriteView.setImage(imagesAttaque[1]);
+        }
+        Joueur joueur = env.getJoueur();
+        Monstre monstre = env.getMonstre();
+        joueur.attaquer(monstre);
+
+        PauseTransition pause = new PauseTransition(Duration.millis(250));
+        pause.setOnFinished(event -> {
+            isAttacking = false;
+            changerImage(direction);
+        });
+        pause.play();
     }
 
-
+    public void supprimerVue() {
+        Pane parent = (Pane) spriteView.getParent();
+        if (parent != null) {
+            parent.getChildren().remove(spriteView);
+        }
+    }
 }

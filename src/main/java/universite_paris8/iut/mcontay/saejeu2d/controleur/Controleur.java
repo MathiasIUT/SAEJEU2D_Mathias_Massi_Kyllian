@@ -4,7 +4,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.image.ImageView;
 import universite_paris8.iut.mcontay.saejeu2d.modele.*;
 import universite_paris8.iut.mcontay.saejeu2d.vue.*;
 
@@ -15,54 +19,80 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 public class Controleur implements Initializable {
-    @FXML
-    private Pane paneJeu;
 
-    private Terrain terrain;
-    private TerrainVue terrainVue;
+    @FXML
+    private Pane pane;
+
     @FXML
     private Pane ptsDeVie;
 
+    private Environnement environnement;
     private Inventaire inventaire;
-    private InventaireVue vue1;
-
+    private InventaireVue inventaireVue;
+    private Terrain terrain;
     private TerrainVue vue;
-
     private Joueur joueur;
     private JoueurVue joueurVue;
-    private Personnage personnage;
-    private Combat combat;
-    private CombatVue combatVue;
+    private Monstre monstre;
+    private MonstreVue monstreVue;
+    private Skateur skateur;
+    private SkateurVue skateurVue;
 
-    private Set<KeyCode> keysPressed = new HashSet<>();
+    private Bouclier bouclier;
+    private BouclierVue bouclierVue;
 
-    private Vie barreDeVie;
+    private Epee epee;
+    private EpeeVue epeeVue;
+
     private VieVue vieVue;
+    private boolean inventaireAffiche = false;
+    private Set<KeyCode> keysPressed = new HashSet<>();
     private GameLoop gameLoop;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        terrain = new Terrain("/universite_paris8/iut/mcontay/saejeu2d/jsonmapsurfacefinal.json");
+        environnement = new Environnement();
         try {
-            terrainVue = new TerrainVue(paneJeu, terrain);
+            vue = new TerrainVue(pane, environnement.getTerrain());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        terrainVue.affichageVue();
-        joueur = new Joueur(terrain, "Joueur1", 1, 400, 450, 100);
-        System.out.println(joueur.getVie());
-        personnage = new Personnage(terrain, "pnj1", "100", "33", 1, 100, 100);
-        joueurVue = new JoueurVue(paneJeu, joueur);
+        vue.affichageVue();
 
-        this.gameLoop = new GameLoop(joueur);
+        joueur = environnement.getJoueur();
+        monstre = environnement.getMonstre();
+        skateur = environnement.getSkateur();
+
+        epee = environnement.getEpee();
+        bouclier = environnement.getBouclier();
+
+        joueurVue = new JoueurVue(pane, environnement);
+        monstreVue = new MonstreVue(pane, environnement.getMonstre());
+        skateurVue = new SkateurVue(pane, skateur);
+        epeeVue = new EpeeVue(pane, epee);
+        bouclierVue = new BouclierVue(pane, bouclier);
+
+        inventaire = joueur.getInventaire();
+        inventaireVue = new InventaireVue(pane, inventaire, joueur, epee, environnement);
+
+        vieVue = new VieVue(pane, joueur);
+
+        pane.setFocusTraversable(true);
+        pane.requestFocus();
+
+        pane.addEventFilter(MouseEvent.MOUSE_CLICKED, this::gererClicSouris);
+
+        gameLoop = new GameLoop(environnement, this::update);
         gameLoop.initGameLoop();
-        inventaire = new Inventaire();
-        this.vue1 = new InventaireVue(paneJeu, inventaire, joueur);
-        this.vue1.afficherInventaire();
-        combat = new Combat(joueur, inventaire);
-        this.combatVue = new CombatVue(joueur, inventaire);
-        barreDeVie = new Vie(paneJeu, joueur);
-        this.vieVue = new VieVue(paneJeu, joueur);
+    }
+
+    public Joueur getJoueur() {
+        return joueur;
+    }
+
+    public void setJoueurEtSkateur(Joueur joueur, Skateur skateur) {
+        this.joueur = joueur;
+        this.skateur = skateur;
     }
 
     public void mouvement(KeyEvent e) {
@@ -74,44 +104,61 @@ public class Controleur implements Initializable {
         }
     }
 
-    public Joueur getJoueur() {
-        return this.joueur;
-    }
-
-    public Personnage getPersonnage() {
-        return this.personnage;
-    }
-
-    private void update() {
-        if (keysPressed.contains(KeyCode.Z)) {
-            joueur.deplacementHaut();
-            joueurVue.changerImage(KeyCode.Z);
-        }
-        if (keysPressed.contains(KeyCode.Q)) {
-            joueur.deplacementGauche();
-            joueurVue.changerImage(KeyCode.Q);
-        }
-        if (keysPressed.contains(KeyCode.S)) {
-            joueur.deplacementBas();
-            joueurVue.changerImage(KeyCode.S);
-        }
-        if (keysPressed.contains(KeyCode.D)) {
-            joueur.deplacementDroite();
-            joueurVue.changerImage(KeyCode.D);
-        }
-    }
-
     public void keyPressed(KeyCode keyCode) {
         keysPressed.add(keyCode);
-        update();
-        if (keyCode == KeyCode.I) {
-            combatVue.demanderArmeEtAttaquer();
+        if (keyCode == KeyCode.E) {
+            for (Objet objet : environnement.getListeObjets()) {
+                if (joueur.estProcheObjet(objet)) {
+                    joueur.getInventaire().ajouterObjet(objet);
+
+                    // Trouver et supprimer dynamiquement la vue associée
+                    pane.getChildren().removeIf(node -> {
+                        if (node instanceof ImageView) {
+                            ImageView imageView = (ImageView) node;
+                            return imageView.getImage() == objet.getImage();
+                        }
+                        return false;
+                    });
+
+                    environnement.getListeObjets().remove(objet);
+                    System.out.println("Objet récupéré: " + objet.getNom());
+                    break;
+                }
+            }
+            inventaireVue.afficherInventaire();
+        } else if (keyCode == KeyCode.H) {
+            joueur.initierDialogue(skateur, pane);
         }
     }
 
     public void keyReleased(KeyCode keyCode) {
         keysPressed.remove(keyCode);
-        update();
         joueur.deplacementStop();
+    }
+
+    private void update() {
+        boolean deplace = false;
+        if (keysPressed.contains(KeyCode.Z)) {
+            joueur.deplacementHaut();
+            deplace = true;
+        }
+        if (keysPressed.contains(KeyCode.Q)) {
+            joueur.deplacementGauche();
+            deplace = true;
+        }
+        if (keysPressed.contains(KeyCode.S)) {
+            joueur.deplacementBas();
+            deplace = true;
+        }
+        if (keysPressed.contains(KeyCode.D)) {
+            joueur.deplacementDroite();
+            deplace = true;
+        }
+    }
+
+    private void gererClicSouris(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY) {
+            joueurVue.VueAttaque(joueur.getDirection());
+        }
     }
 }
