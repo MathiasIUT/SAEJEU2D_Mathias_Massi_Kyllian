@@ -4,7 +4,8 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.scene.layout.Pane;
 
-
+/* Classe GameCamera qui initialise une vue sur le personnage et déplace cette vue en fonction de ses déplacements
+*  - Non mise au code car bug  */
 public class GameCamera {
 
     private final DoubleBinding offsetX;
