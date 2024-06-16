@@ -1,5 +1,10 @@
 package universite_paris8.iut.mcontay.saejeu2d.modele;
 
+/*  La classe PersoQuiAttaque est une entité qui peut attaquer, avec des points d'attaque (ptsAttaque) et de défense (ptsDefense).
+ Elle hérite de Entite et utilise le constructeur pour initialiser ces attributs. La méthode calculerDegats détermine les dégâts infligés en fonction de l'arme utilisée,
+  tandis que infligerDegats réduit les points de vie du joueur en fonction des dégâts reçus et met à jour l'état du joueur.
+ Les getters fournissent l'accès aux points d'attaque et de défense.*/
+
 public class PersoQuiAttaque extends Entite {
     private int ptsAttaque;
     private int ptsDefense;

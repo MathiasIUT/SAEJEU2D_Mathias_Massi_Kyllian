@@ -5,9 +5,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Monstre;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Terrain;
-
 import java.io.IOException;
+
+/* La classe MonstreVue gère l'affichage graphique d'un monstre en chargeant son image et en liant sa position à l'interface utilisateur,
+    tout en supprimant l'affichage lorsque le monstre meurt.*/
 
 public class MonstreVue {
 

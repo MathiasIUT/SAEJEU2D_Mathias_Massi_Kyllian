@@ -2,6 +2,10 @@ package universite_paris8.iut.mcontay.saejeu2d.modele;
 
 import javafx.scene.shape.Rectangle;
 
+/* La classe Skateur est une entité qui se déplace horizontalement entre des limites gauche et droite définies
+    par limiteXgauche et limiteXdroit,changeant de direction lorsqu'elle atteint ces limites.
+ La méthode deplacer override le comportement de déplacement pour respecter ces limites, et getHitbox renvoie la zone de collision du skateur sous forme de rectangle.*/
+
 public class Skateur extends Entite {
 
     double limiteXgauche, limiteXdroit;

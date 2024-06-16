@@ -4,6 +4,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Epee;
 
+/* La classe EpeeVue gère l'affichage graphique d'une épée en créant une représentation visuelle sur un panneau (Pane)
+    aux coordonnées spécifiées et permet sa suppression de l'interface utilisateur.*/
 public class EpeeVue {
     private Pane pane;
     private Epee epee;

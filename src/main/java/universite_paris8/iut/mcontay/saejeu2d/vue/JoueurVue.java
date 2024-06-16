@@ -9,8 +9,11 @@ import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Environnement;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Joueur;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Monstre;
-
 import java.io.IOException;
+
+/* La classe JoueurVue gère l'affichage et les animations du joueur, y compris ses mouvements et ses attaques,
+    en changeant l'image affichée en fonction de la direction et de l'état du joueur. Elle lie les propriétés de position du joueur à l'interface
+    et supprime la vue lorsque le joueur meurt. Les animations d'attaque sont temporisées avec une pause pour simuler l'action.*/
 
 public class JoueurVue {
 

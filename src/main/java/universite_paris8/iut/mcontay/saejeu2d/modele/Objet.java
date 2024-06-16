@@ -2,6 +2,10 @@ package universite_paris8.iut.mcontay.saejeu2d.modele;
 
 import javafx.scene.image.Image;
 
+/*La classe Objet représente un objet du jeu avec des attributs comme le nom, la description, les dégâts, l'image, et la position (x, y).
+ Le constructeur initialise ces attributs et tente de charger l'image à partir d'un chemin donné.
+ Les méthodes getter et setter permettent d'accéder et de modifier les propriétés de l'objet. */
+
 public class Objet {
     private String nom;
     private String description;

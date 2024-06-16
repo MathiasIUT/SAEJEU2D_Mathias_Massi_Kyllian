@@ -3,6 +3,9 @@ package universite_paris8.iut.mcontay.saejeu2d.util;
 import java.util.ArrayList;
 import java.util.List;
 
+/* La classe Chunk représente une section de données d'un jeu avec des propriétés pour sa hauteur, largeur, et position (x, y),
+ ainsi qu'une liste de données (data). Elle fournit des getters et setters pour accéder et modifier ces propriétés.*/
+
 public class Chunk {
     private List<Integer> data = new ArrayList<>();
     private int height;

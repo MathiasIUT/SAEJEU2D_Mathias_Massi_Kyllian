@@ -12,8 +12,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
-import java.util.ArrayList;
-import java.util.List;
+/* La classe Joueur représente un joueur avec des points de vie et des points de vie supplémentaires, un inventaire et une propriété indiquant s'il est mort.
+ Elle peut attaquer des monstres proches, ajouter des points de vie, et vérifier la proximité d'entités ou d'objets.
+  La méthode deplacer gère les collisions avec les pnj, tandis que initierDialogue et afficherDialogue gèrent l'affichage de dialogues interactifs avec le skateur.
+ Les propriétés JavaFX permettent de lier et d'observer les changements d'état du joueur, comme les points de vie et la mort. */
+
 
 public class Joueur extends PersoQuiAttaque {
 
@@ -140,7 +143,7 @@ public class Joueur extends PersoQuiAttaque {
         dialogueBox.setLayoutX(100);
         dialogueBox.setLayoutY(100);
 
-        Label dialogueLabel = new Label("Bonjour, je suis le rat skateur ! \n Je suppose que tu viens me voir pour en savoir plus sur les égouts, si tu veux tout savoir,\n les égouts sont à l'est de la ville,tu trouveras la bas le scientifique fou.\n Je te demande seulement de faire attention car il y a un Vilain Monstre qui s'y trouve, bon courage à toi !");
+        Label dialogueLabel = new Label("Bonjour, je suis le rat skateur ! \n Je suppose que tu viens me voir pour en savoir plus sur les égouts, si tu veux tout savoir,\n les égouts sont au nord de la ville, tu trouveras la bas le scientifique fou.\n Je te demande seulement de faire attention car il y a un Vilain Monstre qui rôde là bas, bon courage à toi !");
         dialogueLabel.setTextFill(Color.WHITE);
         dialogueLabel.setFont(Font.font("Verdana", 14));
 

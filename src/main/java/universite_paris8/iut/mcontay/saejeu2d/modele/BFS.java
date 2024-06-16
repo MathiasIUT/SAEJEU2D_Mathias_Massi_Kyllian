@@ -3,6 +3,12 @@ package universite_paris8.iut.mcontay.saejeu2d.modele;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/* La classe BFS implémente l'algorithme de recherche en largeur pour trouver un chemin sur le terrain.
+Le constructeur initialise le terrain, et la méthode findPath explore les voisins à partir d'un point de départ
+ jusqu'à un point de destination en utilisant une file pour gérer les nœuds à explorer. Elle utilise des matrices pour suivre les parents des nœuds visités et les nœuds déjà visités.
+  Si le chemin est trouvé, reconstructPath reconstruit le chemin en remontant depuis le point de destination jusqu'au point de départ à l'aide des matrices de parents.
+ Si aucun chemin n'est trouvé, une liste vide est renvoyée. */
+
 public class BFS {
     private Terrain terrain;
 

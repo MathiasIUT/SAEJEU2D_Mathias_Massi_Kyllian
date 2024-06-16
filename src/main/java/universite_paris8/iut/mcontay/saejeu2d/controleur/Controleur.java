@@ -2,34 +2,35 @@ package universite_paris8.iut.mcontay.saejeu2d.controleur;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.image.ImageView;
 import universite_paris8.iut.mcontay.saejeu2d.modele.*;
 import universite_paris8.iut.mcontay.saejeu2d.vue.*;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+/* La classe Controleur initialise l'environnement de jeu, les vues associées aux entités et objets, et configure la boucle de jeu pour les mises à jour périodiques.
+ Elle gère les interactions utilisateur via les événements clavier et souris, permettant le mouvement du joueur et l'attaque.
+  La méthode initialize configure les éléments du jeu, tandis que mouvement et keyPressed traitent les pressions de touches pour les déplacements.
+  les interactions avec les objets proches. La méthode gererClicSouris gère les clics de souris pour les attaques.
+   Update met à jour l'état du jeu en fonction des touches pressées.
+ Les inventaires et dialogues sont également gérés via des méthodes dédiées.*/
+
 public class Controleur implements Initializable {
 
     @FXML
     private Pane pane;
 
-    @FXML
-    private Pane ptsDeVie;
-
     private Environnement environnement;
     private Inventaire inventaire;
     private InventaireVue inventaireVue;
-    private Terrain terrain;
     private TerrainVue vue;
     private Joueur joueur;
     private JoueurVue joueurVue;
@@ -45,9 +46,10 @@ public class Controleur implements Initializable {
     private EpeeVue epeeVue;
 
     private VieVue vieVue;
-    private boolean inventaireAffiche = false;
+
     private Set<KeyCode> keysPressed = new HashSet<>();
     private GameLoop gameLoop;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -81,6 +83,17 @@ public class Controleur implements Initializable {
         pane.requestFocus();
 
         pane.addEventFilter(MouseEvent.MOUSE_CLICKED, this::gererClicSouris);
+
+        // Initialiser la cam avec la scène puis le joueur
+        //double sceneWidth = 1280; // largeur de  scène
+        //double sceneHeight = 960; // la hauteur de  scène
+
+        // Vérifiez que les propriétés de largeur et de hauteur du terrain sont bien initialisées
+        if (environnement.getTerrain().widthProperty().get() == 0 || environnement.getTerrain().heightProperty().get() == 0) {
+            throw new IllegalStateException("Les propriétés de terrain doivent être initialisées correctement");
+        }
+
+
 
         gameLoop = new GameLoop(environnement, this::update);
         gameLoop.initGameLoop();
@@ -154,6 +167,8 @@ public class Controleur implements Initializable {
             joueur.deplacementDroite();
             deplace = true;
         }
+
+        // Mettre à jour la position de la caméra à chaque mise à jour
     }
 
     private void gererClicSouris(MouseEvent event) {

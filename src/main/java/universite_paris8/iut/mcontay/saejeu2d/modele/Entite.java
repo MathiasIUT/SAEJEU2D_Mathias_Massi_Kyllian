@@ -4,7 +4,10 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.shape.Rectangle;
+
+/* La classe abstraite Entite représente une entité dans le jeu avec des propriétés pour le nom, les points de vie, la position, la direction, et le mouvement.
+ Elle fournit des méthodes pour déplacer l'entité dans différentes directions et pour gérer les points de vie.
+ Les mouvements sont contrôlés par des méthodes spécifiques qui vérifient la validité des nouvelles positions sur le terrain avant de les mettre à jour. */
 
 public abstract class Entite {
 

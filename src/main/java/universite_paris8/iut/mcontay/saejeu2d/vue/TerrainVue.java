@@ -11,8 +11,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+ /* La classe TerrainVue gère l'affichage graphique du terrain de jeu en chargeant des images de tuiles depuis des fichiers et en les rendant sur un panneau (Pane)
+  basé sur les données de couches de sol et de décoration fournies par l'objet Terrain. */
+
 public class TerrainVue {
-    private static final int TILE_SIZE = 16; // Tile size is 16x16 pixels
+    private static final int TILE_SIZE = 16; // Taille de tuile 16x16 pixels
     private Pane paneJeu;
     private Terrain terrain;
     private Map<Integer, Image> tileImages;
@@ -25,7 +28,7 @@ public class TerrainVue {
 
     private void loadTileImages() throws IOException {
         tileImages = new HashMap<>();
-        // code tuiles de 0 à n, remplacer n avec le nombre de tiles si on change on en a 419 actuellement
+        // code tuiles de 0 à n, remplacer n avec le nombre de tiles si on change on en a 409 actuellement
         for (int i = 0; i <= 409; i++) {
             URL imageUrl = Lanceur.class.getResource("/universite_paris8/iut/mcontay/saejeu2d/map/tile_" + i + ".png");
             tileImages.put(i+1, new Image(imageUrl.openStream()));

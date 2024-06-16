@@ -3,6 +3,10 @@ package universite_paris8.iut.mcontay.saejeu2d.modele;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/* La classe Inventaire gère une liste observable d'objets, permettant d'ajouter, retirer et vérifier la présence d'objets.
+Elle peut équiper ou déséquiper une épée, et fournir des méthodes pour accéder aux objets par leur nom.
+La méthode toString donne une représentation textuelle de l'inventaire. */
+
 public class Inventaire {
 
     private ObservableList<Objet> listeObjets;

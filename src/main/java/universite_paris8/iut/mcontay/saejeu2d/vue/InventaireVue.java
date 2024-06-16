@@ -8,6 +8,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import universite_paris8.iut.mcontay.saejeu2d.modele.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/*La classe InventaireVue gère l'affichage graphique de l'inventaire du joueur, en affichant les objets qu'il contient et en permettant leur utilisation en cliquant dessus.
+ Elle lie les objets de l'inventaire aux vues correspondantes et met à jour l'affichage en fonction des interactions, comme l'utilisation d'un bouclier jusqu'à épuisement.
+ Lorsqu'un bouclier est utilisé, il décrémente ses utilisations restantes et le supprime de l'affichage lorsqu'il est épuisé.*/
 
 public class InventaireVue {
     private Environnement environnement;
@@ -19,6 +25,8 @@ public class InventaireVue {
     private Monstre monstre;
     private VBox inventaireBox;
 
+    private List<BouclierVue> bouclierVues; // Ajoutez cette ligne pour stocker les vues des boucliers
+
     public InventaireVue(Pane pane, Inventaire inventaire, Joueur joueur, Epee epee, Environnement environnement) {
         this.pane = pane;
         this.inventaire = inventaire;
@@ -26,6 +34,8 @@ public class InventaireVue {
         this.epee = epee;
         this.environnement = environnement;
         this.monstre = environnement.getMonstre();
+
+        this.bouclierVues = new ArrayList<>(); // Initialisez la liste
 
         this.inventaire.getObjets().addListener((ListChangeListener<? super Objet>) change -> {
             while (change.next()) {
@@ -77,6 +87,10 @@ public class InventaireVue {
         VBox itemBox = new VBox(imageView, nomObjet);
         itemBox.setStyle("-fx-padding: 5; -fx-border-color: white; -fx-border-width: 1;");
         inventaireBox.getChildren().add(itemBox);
+
+        if (objet instanceof Bouclier) {
+            bouclierVues.add(new BouclierVue(pane, (Bouclier) objet));
+        }
     }
 
     public void utiliserObjet(Objet objet) {
@@ -98,6 +112,19 @@ public class InventaireVue {
             }
         } else if (objet instanceof Bouclier) {
             joueur.ajouterPtsDeVie(25);
+            Bouclier bouclier = (Bouclier) objet;
+            bouclier.decrementerUtilisations();
+            if (bouclier.getUtilisationsRestantes() <= 0) {
+                inventaire.retirerObjet(bouclier);
+                // Trouvez et supprimez l'affichage du bouclier de l'inventaire
+                for (BouclierVue bouclierVue : bouclierVues) {
+                    if (bouclierVue.getBouclier() == bouclier) {
+                        bouclierVue.supprimer();
+                        bouclierVues.remove(bouclierVue);
+                        break;
+                    }
+                }
+            }
             updateInventaireAffichage();
         }
     }

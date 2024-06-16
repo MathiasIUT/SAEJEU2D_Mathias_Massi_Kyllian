@@ -4,6 +4,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Bouclier;
 
+/*  La classe BouclierVue gère l'affichage d'un bouclier en créant une image sur un panneau (Pane) aux coordonnées du bouclier,
+ et permet de supprimer cette image de l'interface utilisateur.*/
+
 public class BouclierVue {
     private Pane pane;
     private Bouclier bouclier;
@@ -22,6 +25,10 @@ public class BouclierVue {
         imageView.setFitHeight(16);
         imageView.setFitWidth(16);
         pane.getChildren().add(imageView);
+    }
+
+    public Bouclier getBouclier() {
+        return bouclier;
     }
 
     public void supprimer() {

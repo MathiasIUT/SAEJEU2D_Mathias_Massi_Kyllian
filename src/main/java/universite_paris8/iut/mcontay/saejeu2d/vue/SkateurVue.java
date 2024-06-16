@@ -5,8 +5,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.mcontay.saejeu2d.Lanceur;
 import universite_paris8.iut.mcontay.saejeu2d.modele.Skateur;
-
 import java.io.IOException;
+/* La classe SkateurVue gère l'affichage et la mise à jour graphique d'un personnage skateur en chargeant ses images et en changeant l'image affichée
+ en fonction de la direction du skateur, tout en liant sa position à l'interface utilisateur. */
 
 public class SkateurVue {
     private Skateur skateur;
@@ -16,8 +17,8 @@ public class SkateurVue {
     public SkateurVue(Pane pane, Skateur skateur) {
         this.skateur = skateur;
         chargerImages();
-        spriteView.setFitHeight(16);
-        spriteView.setFitWidth(16);
+        spriteView.setFitHeight(24);
+        spriteView.setFitWidth(24);
         spriteView.translateXProperty().bind(skateur.positionXProperty());
         spriteView.translateYProperty().bind(skateur.positionYProperty());
         pane.getChildren().add(spriteView);
@@ -28,8 +29,8 @@ public class SkateurVue {
     private void chargerImages() {
         try {
             imagesRatPnj = new Image[]{
-                    new Image(Lanceur.class.getResource("ratSkateInverse.png").openStream()),
-                    new Image(Lanceur.class.getResource("ratSkate.png").openStream())
+                    new Image(Lanceur.class.getResource("pnj/ratSkateInverse.png").openStream()),
+                    new Image(Lanceur.class.getResource("pnj/ratSkate.png").openStream())
             };
             spriteView = new ImageView(imagesRatPnj[0]);
         } catch (IOException e) {

@@ -6,6 +6,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 import java.util.LinkedList;
 import java.util.Random;
 
+/* La classe Monstre étend PersoQuiAttaque et représente un monstre dans le jeu avec des capacités de déplacement et d'attaque.
+ Elle utilise un compteur de déplacement pour suivre les mouvements à intervalles réguliers et suit le joueur pour l'attaquer en utilisant un algorithme de recherche de chemin (BFS).
+  Si le joueur est à portée d'attaque, le monstre inflige des dégâts et, sinon, il se déplace de manière aléatoire.
+ Les méthodes permettent de gérer les déplacements, les attaques, et de mettre à jour l'état de mort du monstre.*/
+
 public class Monstre extends PersoQuiAttaque {
 
     private int deplacementCounter = 0;
