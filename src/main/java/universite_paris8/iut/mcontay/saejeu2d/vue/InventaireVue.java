@@ -101,14 +101,14 @@ public class InventaireVue {
 
         System.out.println("Objet utilisé: " + objet.getNom());
         if (objet instanceof Epee) {
-            if (joueur.estProche(monstre)) {
+            if (joueur.estProche(monstre) && !joueur.estMortProperty().get()) {
                 monstre.enleverPV(objet.getDegats());
                 if (monstre.getPtsDeVie() <= 0) {
                     monstre.setEstMort(true);
                     environnement.supprimerEntiteParId(monstre.getId());
                 }
             } else {
-                System.out.println("Le monstre est trop loin pour être attaqué.");
+                System.out.println("Aucune cible trouvée.");
             }
         } else if (objet instanceof Bouclier) {
             joueur.ajouterPtsDeVie(25);

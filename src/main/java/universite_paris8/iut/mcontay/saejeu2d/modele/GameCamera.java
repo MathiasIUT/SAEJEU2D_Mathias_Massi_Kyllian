@@ -1,9 +1,9 @@
-package universite_paris8.iut.mcontay.saejeu2d.vue;
+package universite_paris8.iut.mcontay.saejeu2d.modele;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.scene.layout.Pane;
-import universite_paris8.iut.mcontay.saejeu2d.modele.Joueur;
+
 
 public class GameCamera {
 

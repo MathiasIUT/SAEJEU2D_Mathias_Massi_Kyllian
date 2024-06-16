@@ -118,6 +118,10 @@ public class Controleur implements Initializable {
     }
 
     public void keyPressed(KeyCode keyCode) {
+        if (joueur.estMortProperty().get()) {
+            return;
+        }
+
         keysPressed.add(keyCode);
         if (keyCode == KeyCode.E) {
             for (Objet objet : environnement.getListeObjets()) {
@@ -172,7 +176,7 @@ public class Controleur implements Initializable {
     }
 
     private void gererClicSouris(MouseEvent event) {
-        if (event.getButton() == MouseButton.SECONDARY) {
+        if (event.getButton() == MouseButton.SECONDARY && !joueur.estMortProperty().get()) {
             joueurVue.VueAttaque(joueur.getDirection());
         }
     }
