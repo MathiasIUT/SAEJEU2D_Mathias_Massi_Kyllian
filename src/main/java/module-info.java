@@ -1,13 +1,12 @@
-module SAEJEU2D.src.main.java{
+module SAEJEU2D {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
     requires com.google.gson;
-//    requires org.testng;
+    requires org.testng;
 //    requires org.junit.jupiter.api;
-
 
     opens universite_paris8.iut.mcontay.saejeu2d to javafx.fxml;
     exports universite_paris8.iut.mcontay.saejeu2d;

@@ -6,11 +6,11 @@ import javafx.scene.shape.Rectangle;
     par limiteXgauche et limiteXdroit,changeant de direction lorsqu'elle atteint ces limites.
  La méthode deplacer override le comportement de déplacement pour respecter ces limites, et getHitbox renvoie la zone de collision du skateur sous forme de rectangle.*/
 
-public class Skateur extends Entite {
+public class Skater extends Entite {
 
     double limiteXgauche, limiteXdroit;
 
-    public Skateur(Environnement environnement, Terrain terrain, String nom, int ptsDeVie, double initialX, double initialY, int id, int moveDistance) {
+    public Skater(Environnement environnement, Terrain terrain, String nom, int ptsDeVie, double initialX, double initialY, int id, int moveDistance) {
         super(environnement, terrain, nom, ptsDeVie, initialX + 100, initialY, id, moveDistance);
         this.limiteXgauche = initialX;
         this.limiteXdroit = initialX + 100;

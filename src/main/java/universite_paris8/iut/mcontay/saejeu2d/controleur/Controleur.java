@@ -36,8 +36,8 @@ public class Controleur implements Initializable {
     private JoueurVue joueurVue;
     private Monstre monstre;
     private MonstreVue monstreVue;
-    private Skateur skateur;
-    private SkateurVue skateurVue;
+    private Skater skater;
+    private SkaterVue skaterVue;
 
     private Bouclier bouclier;
     private BouclierVue bouclierVue;
@@ -63,14 +63,14 @@ public class Controleur implements Initializable {
 
         joueur = environnement.getJoueur();
         monstre = environnement.getMonstre();
-        skateur = environnement.getSkateur();
+        skater = environnement.getSkateur();
 
         epee = environnement.getEpee();
         bouclier = environnement.getBouclier();
 
         joueurVue = new JoueurVue(pane, environnement);
         monstreVue = new MonstreVue(pane, environnement.getMonstre());
-        skateurVue = new SkateurVue(pane, skateur);
+        skaterVue = new SkaterVue(pane, skater);
         epeeVue = new EpeeVue(pane, epee);
         bouclierVue = new BouclierVue(pane, bouclier);
 
@@ -103,9 +103,9 @@ public class Controleur implements Initializable {
         return joueur;
     }
 
-    public void setJoueurEtSkateur(Joueur joueur, Skateur skateur) {
+    public void setJoueurEtSkateur(Joueur joueur, Skater skater) {
         this.joueur = joueur;
-        this.skateur = skateur;
+        this.skater = skater;
     }
 
     public void mouvement(KeyEvent e) {
@@ -144,7 +144,7 @@ public class Controleur implements Initializable {
             }
             inventaireVue.afficherInventaire();
         } else if (keyCode == KeyCode.H) {
-            joueur.initierDialogue(skateur, pane);
+            joueur.initierDialogue(skater, pane);
         }
     }
 

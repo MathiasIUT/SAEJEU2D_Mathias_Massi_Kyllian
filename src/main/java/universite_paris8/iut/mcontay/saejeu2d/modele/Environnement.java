@@ -16,7 +16,7 @@ public class Environnement {
     private Terrain terrain;
     private Joueur joueur;
     private Monstre monstre;
-    private Skateur skateur;
+    private Skater skater;
     private ObservableList<Entite> listeActeurs;
     private ObservableList<Objet> listeObjets;
 
@@ -27,8 +27,8 @@ public class Environnement {
         terrain = new Terrain("/universite_paris8/iut/mcontay/saejeu2d/jsonmapsurfacefinal.json");
         joueur = new Joueur(this, terrain, "Hector", 100, 100, 100, 300, 400, 1, 3);
         monstre = new Monstre(this, terrain, "Vilain Monstre", 100, 25, 50, 655, 45, 2, 15);
-        skateur = new Skateur(this, terrain, "Rat Skateur", 100, 300, 420, 3, 2);
-        listeActeurs.addAll(joueur, monstre, skateur);
+        skater = new Skater(this, terrain, "Rat Skateur", 100, 300, 420, 3, 2);
+        listeActeurs.addAll(joueur, monstre, skater);
 
         Epee epee = new Epee("Épée", "Une épée tranchante", 20, "/universite_paris8/iut/mcontay/saejeu2d/Épée.png", 352, 332);
         Bouclier bouclier = new Bouclier("Bouclier", "Un bouclier robuste", terrain, 5, "/universite_paris8/iut/mcontay/saejeu2d/Bouclier.png", 1104, 350, 30);
@@ -84,8 +84,8 @@ public class Environnement {
         return terrain;
     }
 
-    public Skateur getSkateur() {
-        return skateur;
+    public Skater getSkateur() {
+        return skater;
     }
 
     public Epee getEpee() {
@@ -95,4 +95,8 @@ public class Environnement {
     public Bouclier getBouclier() {
         return (Bouclier) listeObjets.filtered(obj -> obj instanceof Bouclier).get(0);
     }
+    public void ajouterEntite(Entite entite) {
+        listeActeurs.add(entite);
+    }
+
 }

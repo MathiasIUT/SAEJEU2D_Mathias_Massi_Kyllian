@@ -120,8 +120,8 @@ public class Joueur extends PersoQuiAttaque {
         super.deplacer();
 
         for (Entite entite : getEnvironnement().getListeActeurs()) {
-            if (entite instanceof Skateur) {
-                Rectangle hitbox = ((Skateur) entite).getHitbox();
+            if (entite instanceof Skater) {
+                Rectangle hitbox = ((Skater) entite).getHitbox();
                 if (hitbox.intersects(getPositionX(), getPositionY(), 16, 16)) {
                     setPositionX(oldX);
                     setPositionY(oldY);
@@ -131,13 +131,13 @@ public class Joueur extends PersoQuiAttaque {
         }
     }
 
-    public void initierDialogue(Skateur skateur, Pane pane) {
-        if (estProche(skateur)) {
-            afficherDialogue(skateur, pane);
+    public void initierDialogue(Skater skater, Pane pane) {
+        if (estProche(skater)) {
+            afficherDialogue(skater, pane);
         }
     }
 
-    private void afficherDialogue(Skateur skateur, Pane pane) {
+    private void afficherDialogue(Skater skater, Pane pane) {
         VBox dialogueBox = new VBox();
         dialogueBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8); -fx-padding: 10; -fx-border-color: white; -fx-border-width: 2;");
         dialogueBox.setLayoutX(100);

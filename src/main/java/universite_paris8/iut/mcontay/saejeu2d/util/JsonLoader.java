@@ -8,10 +8,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-/* La classe JsonLoader charge un fichier JSON spécifié, le parse en utilisant Jackson, et extrait les données des couches de tuiles (tilelayer) en les stockant dans une map.
- Le constructeur initialise rootNode en lisant le fichier JSON, et la méthode getLayers parcourt les couches pour récupérer les données de tuiles.
- La méthode close est implémentée mais inutile ici car aucune ressource n'a besoin d'être fermée. */
-
 public class JsonLoader implements AutoCloseable {
     private JsonNode rootNode;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -48,4 +44,3 @@ public class JsonLoader implements AutoCloseable {
         // No resources to close in this example
     }
 }
-
