@@ -9,13 +9,12 @@ public class EnvironnementTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialisation de l'environnement
         environnement = new Environnement();
     }
 
     @Test
+    //Test de l'initialisation
     public void testInitialisationEnvironnement() {
-        // Vérifie que les entités de l'environnement sont initialisées correctement
         assertNotNull(environnement.getJoueur(), "Le joueur doit être initialisé");
         assertNotNull(environnement.getMonstre(), "Le monstre doit être initialisé");
         assertNotNull(environnement.getSkateur(), "Le skateur doit être initialisé");
@@ -23,7 +22,7 @@ public class EnvironnementTest {
 
     @Test
     public void testAjouterEntite() {
-        // Teste l'ajout d'une entité dans l'environnement
+        //Test ajouter Entite
         Joueur joueurTest = new Joueur(environnement, environnement.getTerrain(), "TestJoueur", 100, 10, 5, 0, 0, 1, 5);
         environnement.ajouterEntite(joueurTest);
         assertTrue(environnement.getListeActeurs().contains(joueurTest), "L'entité joueurTest devrait être ajoutée à la liste des acteurs");
@@ -31,7 +30,7 @@ public class EnvironnementTest {
 
     @Test
     public void testSupprimerEntiteParId() {
-        // Teste la suppression d'une entité par son ID
+        //Test supprimer Entite
         int idMonstre = environnement.getMonstre().getId();
         environnement.supprimerEntiteParId(idMonstre);
         assertFalse(environnement.getListeActeurs().contains(environnement.getMonstre()), "Le monstre ne devrait plus être dans la liste des acteurs après suppression");
@@ -39,7 +38,7 @@ public class EnvironnementTest {
 
     @Test
     public void testFaireUnTour() {
-        // Teste l'exécution d'un tour de jeu
+        //Test faire un tour
         assertTrue(environnement.faireUnTour(), "La méthode faireUnTour devrait retourner true si le joueur est vivant");
         environnement.getJoueur().setPtsDeVie(0);
         assertFalse(environnement.faireUnTour(), "La méthode faireUnTour devrait retourner false si le joueur est mort");
