@@ -5,11 +5,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-/* La classe Environnement initialise et gère les composants du jeu, y compris les entités comme le joueur, le monstre et le skateur, ainsi que les objets comme l'épée et le bouclier.
- Elle maintient des listes observables d'acteurs et d'objets, et suit le nombre de tours de jeu avec une propriété.
-  Le constructeur initialise le terrain et les entités, ajoutant celles-ci aux listes correspondantes. La méthode faireUnTour déplace chaque entité et met à jour le nombre de tours,
- tandis que d'autres méthodes permettent de gérer la suppression des entités et d'accéder aux composants spécifiques. */
-
 public class Environnement {
 
     private IntegerProperty nbTours;
@@ -72,6 +67,7 @@ public class Environnement {
         listeActeurs.remove(entite);
     }
 
+    // Correct return types for these methods
     public Joueur getJoueur() {
         return joueur;
     }
@@ -95,8 +91,8 @@ public class Environnement {
     public Bouclier getBouclier() {
         return (Bouclier) listeObjets.filtered(obj -> obj instanceof Bouclier).get(0);
     }
+
     public void ajouterEntite(Entite entite) {
         listeActeurs.add(entite);
     }
-
 }
