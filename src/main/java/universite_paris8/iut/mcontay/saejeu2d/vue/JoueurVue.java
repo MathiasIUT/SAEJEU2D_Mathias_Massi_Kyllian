@@ -62,37 +62,32 @@ public class JoueurVue {
     }
 
     private void chargerImages() {
-        try {
-            imagesMarcheBas = new Image[]{
-                    new Image(Lanceur.class.getResource("Joueur/joueurDeboutFace.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceFace2.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceFace.png").openStream())
-            };
-            imagesMarcheHaut = new Image[]{
-                    new Image(Lanceur.class.getResource("Joueur/joueurDeboutDos.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceDos.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceDos2.png").openStream())
-            };
-            imagesMarcheGauche = new Image[]{
-                    new Image(Lanceur.class.getResource("Joueur/joueurDeboutGauche.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceGauche.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceGauche2.png").openStream())
-            };
-            imagesMarcheDroite = new Image[]{
-                    new Image(Lanceur.class.getResource("Joueur/joueurDeboutDroit.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceDroite.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAvanceDroite2.png").openStream())
-            };
-            imagesAttaque = new Image[]{
-                    new Image(Lanceur.class.getResource("Joueur/joueurAttaqueHaut.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAttaqueBas.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAttaqueDroite.png").openStream()),
-                    new Image(Lanceur.class.getResource("Joueur/joueurAttaqueGauche.png").openStream())
-            };
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        imagesMarcheBas = new Image[]{
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurDeboutFace.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAvanceFace2.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAvanceFace.png"))
+        };
+        imagesMarcheHaut = new Image[]{
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurDeboutDos.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAvanceDos.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAvanceDos2.png"))
+        };
+        imagesMarcheGauche = new Image[]{
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurDeboutGauche.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAvanceGauche.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAvanceGauche2.png"))
+        };
+        imagesMarcheDroite = new Image[]{
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurDeboutDroit.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAvanceDroite.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAvanceDroite2.png"))
+        };
+        imagesAttaque = new Image[]{
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAttaqueHaut.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAttaqueBas.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAttaqueDroite.png")),
+            new Image(Lanceur.class.getResourceAsStream("/universite_paris8/iut/mcontay/saejeu2d/joueur/joueurAttaqueGauche.png"))
+        };
     }
 
     public void changerImage(int direction) {
