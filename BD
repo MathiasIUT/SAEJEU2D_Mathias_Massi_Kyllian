@@ -1,0 +1,754 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : localhost
+-- Généré le : jeu. 23 jan. 2025 à 00:04
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.0.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données : `dutinfopw201613bis`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `champ_projet`
+--
+
+CREATE TABLE `champ_projet` (
+  `id_champ` int(11) NOT NULL,
+  `id_projet` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `type` enum('texte','lien','fichier') NOT NULL,
+  `obligatoire` tinyint(1) DEFAULT 0,
+  `modifiable_groupe` tinyint(1) DEFAULT 0,
+  `ordre` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `competence`
+--
+
+CREATE TABLE `competence` (
+  `id_competence` int(11) NOT NULL,
+  `id_projet` int(11) NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `libelle` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `niveau_requis` int(11) NOT NULL CHECK (`niveau_requis` between 1 and 3),
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `evaluation`
+--
+
+CREATE TABLE `evaluation` (
+  `id_evaluation` int(11) NOT NULL,
+  `id_projet` int(11) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `coefficient` decimal(3,1) DEFAULT 1.0,
+  `type` enum('groupe','individuel') NOT NULL,
+  `id_rendu` int(11) DEFAULT NULL,
+  `id_evaluateur` int(11) NOT NULL,
+  `id_evaluateur_delegue` int(11) DEFAULT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp(),
+  `date_evaluation` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `evaluation`
+--
+
+INSERT INTO `evaluation` (`id_evaluation`, `id_projet`, `titre`, `description`, `coefficient`, `type`, `id_rendu`, `id_evaluateur`, `id_evaluateur_delegue`, `date_creation`, `date_evaluation`) VALUES
+(5, 16, 'aa', '', 2.0, 'individuel', NULL, 9, NULL, '2025-01-22 21:16:30', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `evaluation_note`
+--
+
+CREATE TABLE `evaluation_note` (
+  `id_note` int(11) NOT NULL,
+  `id_evaluation` int(11) NOT NULL,
+  `id_etudiant` int(11) NOT NULL,
+  `note` decimal(4,2) DEFAULT NULL CHECK (`note` >= 0 and `note` <= 20),
+  `commentaire` text DEFAULT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `groupe_etudiant`
+--
+
+CREATE TABLE `groupe_etudiant` (
+  `id_groupe` int(11) NOT NULL,
+  `id_etudiant` int(11) NOT NULL,
+  `date_ajout` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `groupe_projet`
+--
+
+CREATE TABLE `groupe_projet` (
+  `id_groupe` int(11) NOT NULL,
+  `id_projet` int(11) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `titre_modifiable` tinyint(1) DEFAULT 0,
+  `image_modifiable` tinyint(1) DEFAULT 0,
+  `image` varchar(255) DEFAULT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp(),
+  `id_groupe_temp` char(36) NOT NULL DEFAULT uuid(),
+  `id_projet_temp` char(36) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `livrable`
+--
+
+CREATE TABLE `livrable` (
+  `id_livrable` int(11) NOT NULL,
+  `id_projet` int(11) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `type` enum('document','code','presentation','autre') NOT NULL,
+  `date_limite` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `obligatoire` tinyint(1) DEFAULT 0,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `message`
+--
+
+CREATE TABLE `message` (
+  `id_message` int(11) NOT NULL,
+  `id_expediteur` int(11) NOT NULL,
+  `id_destinataire` int(11) NOT NULL,
+  `sujet` varchar(255) NOT NULL,
+  `contenu` text NOT NULL,
+  `date_envoi` timestamp NOT NULL DEFAULT current_timestamp(),
+  `lu` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `projet`
+--
+
+CREATE TABLE `projet` (
+  `id_projet` int(11) NOT NULL,
+  `annee_universitaire` varchar(9) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `semestre` tinyint(1) NOT NULL,
+  `date_debut` date NOT NULL,
+  `date_fin` date NOT NULL,
+  `trello_link` varchar(255) DEFAULT NULL,
+  `git_link` varchar(255) DEFAULT NULL,
+  `id_responsable` int(11) NOT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp(),
+  `annee` varchar(9) NOT NULL DEFAULT '2023-2024',
+  `travail_groupe` tinyint(1) NOT NULL DEFAULT 0,
+  `groupe_modifiable` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `projet`
+--
+
+INSERT INTO `projet` (`id_projet`, `annee_universitaire`, `titre`, `description`, `semestre`, `date_debut`, `date_fin`, `trello_link`, `git_link`, `id_responsable`, `date_creation`, `annee`, `travail_groupe`, `groupe_modifiable`) VALUES
+(11, 'BUT2', 'test', 't', 4, '0000-00-00', '0000-00-00', 'https://www.apachefriends.org/fr/download.html', 'https://www.apachefriends.org/fr/download.html', 7, '2025-01-22 04:01:48', '2023-2024', 0, 0),
+(12, 'BUT2', 'test', '120', 3, '0000-00-00', '0000-00-00', 'https://www.apachefriends.org/fr/download.html', 'https://www.apachefriends.org/fr/download.html', 7, '2025-01-22 04:41:35', '2023-2024', 0, 0),
+(13, 'BUT1', 'test', 'fhb', 0, '0000-00-00', '0000-00-00', 'https://www.google.com/search?client=opera-gx&q=trello&sourceid=opera&ie=UTF-8&oe=UTF-8', 'https://www.apachefriends.org/fr/download.html', 7, '2025-01-22 04:58:20', '2023-2024', 0, 0),
+(14, '', 'fuk', 'ghjk', 0, '0000-00-00', '0000-00-00', NULL, NULL, 9, '2025-01-22 19:34:00', '', 0, 0),
+(15, '', 'aa', 'jklhj', 0, '0000-00-00', '0000-00-00', NULL, NULL, 9, '2025-01-22 20:00:03', '', 0, 0),
+(16, '', 'aa', 'ghjlk', 0, '0000-00-00', '0000-00-00', NULL, NULL, 9, '2025-01-22 20:02:06', '', 0, 0),
+(17, '', 'aaaaaa', 'wfg', 0, '0000-00-00', '0000-00-00', NULL, NULL, 9, '2025-01-22 22:22:04', '', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `projet_champ`
+--
+
+CREATE TABLE `projet_champ` (
+  `id_champ` int(11) NOT NULL,
+  `id_projet` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `type` enum('texte','nombre','date','choix') NOT NULL,
+  `modifiable_etudiant` tinyint(1) NOT NULL DEFAULT 0,
+  `valeur` text DEFAULT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `projet_responsable`
+--
+
+CREATE TABLE `projet_responsable` (
+  `id_projet` int(11) NOT NULL,
+  `id_enseignant` int(11) NOT NULL,
+  `role` enum('responsable','co-responsable','intervenant') NOT NULL,
+  `date_ajout` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `projet_responsable`
+--
+
+INSERT INTO `projet_responsable` (`id_projet`, `id_enseignant`, `role`, `date_ajout`) VALUES
+(11, 3, 'co-responsable', '2025-01-22 04:01:48'),
+(12, 2, 'intervenant', '2025-01-22 04:41:35'),
+(12, 9, 'co-responsable', '2025-01-22 04:41:35'),
+(13, 9, 'co-responsable', '2025-01-22 05:04:35'),
+(14, 7, 'co-responsable', '2025-01-22 19:34:00'),
+(15, 2, 'co-responsable', '2025-01-22 20:00:03'),
+(17, 2, 'intervenant', '2025-01-22 22:22:04'),
+(17, 7, 'co-responsable', '2025-01-22 22:22:04');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `rendu_projet`
+--
+
+CREATE TABLE `rendu_projet` (
+  `id_rendu` int(11) NOT NULL,
+  `id_projet` int(11) NOT NULL,
+  `id_groupe` int(11) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `date_limite` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `type_evaluation` enum('groupe','individuel') NOT NULL DEFAULT 'groupe',
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp(),
+  `note` decimal(4,2) DEFAULT NULL,
+  `commentaire` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ressource`
+--
+
+CREATE TABLE `ressource` (
+  `id_ressource` int(11) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `type` varchar(50) NOT NULL,
+  `lien` text DEFAULT NULL,
+  `fichier` varchar(255) DEFAULT NULL,
+  `id_utilisateur` int(11) DEFAULT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp(),
+  `promotion` varchar(4) NOT NULL DEFAULT 'BUT1' CHECK (`promotion` in ('BUT1','BUT2','BUT3')),
+  `mise_en_avant` tinyint(1) NOT NULL DEFAULT 0
+) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ressources`
+--
+
+CREATE TABLE `ressources` (
+  `id_ressource` int(11) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `type` enum('document','lien') NOT NULL,
+  `chemin` varchar(255) NOT NULL,
+  `id_projet` int(11) DEFAULT NULL,
+  `id_enseignant` int(11) NOT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `soutenance`
+--
+
+CREATE TABLE `soutenance` (
+  `id_soutenance` int(11) NOT NULL,
+  `id_projet` int(11) NOT NULL,
+  `date_soutenance` date NOT NULL,
+  `duree` int(11) NOT NULL,
+  `salle` varchar(50) NOT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `soutenance_groupe`
+--
+
+CREATE TABLE `soutenance_groupe` (
+  `id_soutenance` int(11) NOT NULL,
+  `id_groupe` int(11) NOT NULL,
+  `heure_passage` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `soutenance_passage`
+--
+
+CREATE TABLE `soutenance_passage` (
+  `id_passage` int(11) NOT NULL,
+  `id_soutenance` int(11) NOT NULL,
+  `id_groupe` int(11) NOT NULL,
+  `heure_passage` time NOT NULL,
+  `note` decimal(4,2) DEFAULT NULL CHECK (`note` >= 0 and `note` <= 20),
+  `commentaire` text DEFAULT NULL,
+  `date_evaluation` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateurs`
+--
+
+CREATE TABLE `utilisateurs` (
+  `id` int(11) NOT NULL,
+  `login` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','enseignant','etudiant') NOT NULL,
+  `nom` varchar(100) DEFAULT NULL,
+  `prenom` varchar(100) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `utilisateurs`
+--
+
+INSERT INTO `utilisateurs` (`id`, `login`, `password`, `role`, `nom`, `prenom`, `email`, `date_creation`) VALUES
+(1, 'admin', '$2y$10$8I6/0U6pXXnyKwh9VLxz6ODqQZxHxkzQh0M7NpI.fX5GpZO4Y1nye', 'admin', 'Admin', 'System', 'admin@iut.fr', '2025-01-20 22:54:49'),
+(2, 'prof1', '$2y$10$8I6/0U6pXXnyKwh9VLxz6ODqQZxHxkzQh0M7NpI.fX5GpZO4Y1nye', 'enseignant', 'Dupont', 'Jean', 'jean.dupont@iut.fr', '2025-01-20 22:54:49'),
+(3, 'prof2', '$2y$10$8I6/0U6pXXnyKwh9VLxz6ODqQZxHxkzQh0M7NpI.fX5GpZO4Y1nye', 'enseignant', 'Martin', 'Marie', 'marie.martin@iut.fr', '2025-01-20 22:54:49'),
+(4, 'etudiant1', '$2y$10$8I6/0U6pXXnyKwh9VLxz6ODqQZxHxkzQh0M7NpI.fX5GpZO4Y1nye', 'etudiant', 'Dubois', 'Pierre', 'pierre.dubois@etu.iut.fr', '2025-01-20 22:54:49'),
+(5, 'etudiant2', '$2y$10$8I6/0U6pXXnyKwh9VLxz6ODqQZxHxkzQh0M7NpI.fX5GpZO4Y1nye', 'etudiant', 'Leroy', 'Sophie', 'sophie.leroy@etu.iut.fr', '2025-01-20 22:54:49'),
+(6, 'etudiant3', '$2y$10$8I6/0U6pXXnyKwh9VLxz6ODqQZxHxkzQh0M7NpI.fX5GpZO4Y1nye', 'etudiant', 'Moreau', 'Lucas', 'lucas.moreau@etu.iut.fr', '2025-01-20 22:54:49'),
+(7, 'testprof', '$2y$10$ZFbSeY65m89.49R6/FEDeO9VS36K1w2wdbJwwJUphxx2nIwtZ0c0S', 'enseignant', 'Contay', 'Mathias', 'mathiascty@gmail.com', '2025-01-20 23:50:31'),
+(8, 'testeleve', '$2y$10$X50hOaIaOzBHPKj0/j49TuyIhgVvIxVr7aRIEDrWBoSouTYFll5Ha', 'etudiant', 'Gender', 'Mike', 'mike.gender@gmail.com', '2025-01-21 21:08:28'),
+(9, 'prof', '$2y$10$MicITHyeroAIMOmEWwJ8c.Dgpw14iWDdY9bpsaLPnXUI/PQo2srSG', 'enseignant', 'Bossard', 'Aurelien', 'aaaaaaa@gmail.com', '2025-01-22 04:11:32');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `valeur_champ`
+--
+
+CREATE TABLE `valeur_champ` (
+  `id_valeur` int(11) NOT NULL,
+  `id_champ` int(11) NOT NULL,
+  `id_groupe` int(11) DEFAULT NULL,
+  `valeur` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `champ_projet`
+--
+ALTER TABLE `champ_projet`
+  ADD PRIMARY KEY (`id_champ`),
+  ADD KEY `id_projet` (`id_projet`);
+
+--
+-- Index pour la table `competence`
+--
+ALTER TABLE `competence`
+  ADD PRIMARY KEY (`id_competence`),
+  ADD KEY `id_projet` (`id_projet`);
+
+--
+-- Index pour la table `evaluation`
+--
+ALTER TABLE `evaluation`
+  ADD PRIMARY KEY (`id_evaluation`),
+  ADD KEY `fk_evaluation_rendu` (`id_rendu`),
+  ADD KEY `idx_evaluation_projet` (`id_projet`),
+  ADD KEY `idx_evaluation_evaluateur` (`id_evaluateur`),
+  ADD KEY `idx_evaluation_delegue` (`id_evaluateur_delegue`);
+
+--
+-- Index pour la table `evaluation_note`
+--
+ALTER TABLE `evaluation_note`
+  ADD PRIMARY KEY (`id_note`),
+  ADD UNIQUE KEY `uk_evaluation_etudiant` (`id_evaluation`,`id_etudiant`),
+  ADD KEY `idx_evaluation_note_evaluation` (`id_evaluation`),
+  ADD KEY `idx_evaluation_note_etudiant` (`id_etudiant`);
+
+--
+-- Index pour la table `groupe_etudiant`
+--
+ALTER TABLE `groupe_etudiant`
+  ADD PRIMARY KEY (`id_groupe`,`id_etudiant`),
+  ADD KEY `id_etudiant` (`id_etudiant`);
+
+--
+-- Index pour la table `groupe_projet`
+--
+ALTER TABLE `groupe_projet`
+  ADD PRIMARY KEY (`id_groupe`),
+  ADD KEY `fk_groupe_projet` (`id_projet`);
+
+--
+-- Index pour la table `livrable`
+--
+ALTER TABLE `livrable`
+  ADD PRIMARY KEY (`id_livrable`),
+  ADD KEY `id_projet` (`id_projet`);
+
+--
+-- Index pour la table `message`
+--
+ALTER TABLE `message`
+  ADD PRIMARY KEY (`id_message`),
+  ADD KEY `id_expediteur` (`id_expediteur`),
+  ADD KEY `id_destinataire` (`id_destinataire`);
+
+--
+-- Index pour la table `projet`
+--
+ALTER TABLE `projet`
+  ADD PRIMARY KEY (`id_projet`),
+  ADD KEY `id_responsable` (`id_responsable`);
+
+--
+-- Index pour la table `projet_champ`
+--
+ALTER TABLE `projet_champ`
+  ADD PRIMARY KEY (`id_champ`),
+  ADD KEY `fk_projet_champ_projet` (`id_projet`);
+
+--
+-- Index pour la table `projet_responsable`
+--
+ALTER TABLE `projet_responsable`
+  ADD PRIMARY KEY (`id_projet`,`id_enseignant`),
+  ADD KEY `id_enseignant` (`id_enseignant`);
+
+--
+-- Index pour la table `rendu_projet`
+--
+ALTER TABLE `rendu_projet`
+  ADD PRIMARY KEY (`id_rendu`),
+  ADD KEY `id_projet` (`id_projet`),
+  ADD KEY `idx_rendu_projet_date` (`date_creation`),
+  ADD KEY `idx_rendu_projet_note` (`note`),
+  ADD KEY `idx_rendu_projet_groupe` (`id_groupe`);
+
+--
+-- Index pour la table `ressource`
+--
+ALTER TABLE `ressource`
+  ADD PRIMARY KEY (`id_ressource`),
+  ADD KEY `id_utilisateur` (`id_utilisateur`);
+
+--
+-- Index pour la table `ressources`
+--
+ALTER TABLE `ressources`
+  ADD PRIMARY KEY (`id_ressource`),
+  ADD KEY `id_projet` (`id_projet`),
+  ADD KEY `id_enseignant` (`id_enseignant`);
+
+--
+-- Index pour la table `soutenance`
+--
+ALTER TABLE `soutenance`
+  ADD PRIMARY KEY (`id_soutenance`),
+  ADD KEY `idx_soutenance_projet` (`id_projet`),
+  ADD KEY `idx_soutenance_date` (`date_soutenance`);
+
+--
+-- Index pour la table `soutenance_groupe`
+--
+ALTER TABLE `soutenance_groupe`
+  ADD PRIMARY KEY (`id_soutenance`,`id_groupe`),
+  ADD KEY `id_groupe` (`id_groupe`),
+  ADD KEY `idx_soutenance_groupe_heure` (`heure_passage`);
+
+--
+-- Index pour la table `soutenance_passage`
+--
+ALTER TABLE `soutenance_passage`
+  ADD PRIMARY KEY (`id_passage`),
+  ADD UNIQUE KEY `uk_soutenance_groupe` (`id_soutenance`,`id_groupe`),
+  ADD KEY `fk_passage_groupe` (`id_groupe`);
+
+--
+-- Index pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`);
+
+--
+-- Index pour la table `valeur_champ`
+--
+ALTER TABLE `valeur_champ`
+  ADD PRIMARY KEY (`id_valeur`),
+  ADD KEY `id_champ` (`id_champ`),
+  ADD KEY `id_groupe` (`id_groupe`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `champ_projet`
+--
+ALTER TABLE `champ_projet`
+  MODIFY `id_champ` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `competence`
+--
+ALTER TABLE `competence`
+  MODIFY `id_competence` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `evaluation`
+--
+ALTER TABLE `evaluation`
+  MODIFY `id_evaluation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT pour la table `evaluation_note`
+--
+ALTER TABLE `evaluation_note`
+  MODIFY `id_note` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `groupe_projet`
+--
+ALTER TABLE `groupe_projet`
+  MODIFY `id_groupe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `livrable`
+--
+ALTER TABLE `livrable`
+  MODIFY `id_livrable` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `message`
+--
+ALTER TABLE `message`
+  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `projet`
+--
+ALTER TABLE `projet`
+  MODIFY `id_projet` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT pour la table `projet_champ`
+--
+ALTER TABLE `projet_champ`
+  MODIFY `id_champ` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `rendu_projet`
+--
+ALTER TABLE `rendu_projet`
+  MODIFY `id_rendu` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `ressource`
+--
+ALTER TABLE `ressource`
+  MODIFY `id_ressource` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `ressources`
+--
+ALTER TABLE `ressources`
+  MODIFY `id_ressource` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `soutenance`
+--
+ALTER TABLE `soutenance`
+  MODIFY `id_soutenance` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT pour la table `soutenance_passage`
+--
+ALTER TABLE `soutenance_passage`
+  MODIFY `id_passage` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT pour la table `valeur_champ`
+--
+ALTER TABLE `valeur_champ`
+  MODIFY `id_valeur` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `champ_projet`
+--
+ALTER TABLE `champ_projet`
+  ADD CONSTRAINT `champ_projet_ibfk_1` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`);
+
+--
+-- Contraintes pour la table `competence`
+--
+ALTER TABLE `competence`
+  ADD CONSTRAINT `competence_ibfk_1` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `evaluation`
+--
+ALTER TABLE `evaluation`
+  ADD CONSTRAINT `fk_evaluation_delegue` FOREIGN KEY (`id_evaluateur_delegue`) REFERENCES `utilisateurs` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_evaluation_evaluateur` FOREIGN KEY (`id_evaluateur`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_evaluation_projet` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_evaluation_rendu` FOREIGN KEY (`id_rendu`) REFERENCES `rendu_projet` (`id_rendu`) ON DELETE SET NULL;
+
+--
+-- Contraintes pour la table `evaluation_note`
+--
+ALTER TABLE `evaluation_note`
+  ADD CONSTRAINT `fk_evaluation_note_etudiant` FOREIGN KEY (`id_etudiant`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_evaluation_note_evaluation` FOREIGN KEY (`id_evaluation`) REFERENCES `evaluation` (`id_evaluation`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `groupe_projet`
+--
+ALTER TABLE `groupe_projet`
+  ADD CONSTRAINT `fk_groupe_projet` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `livrable`
+--
+ALTER TABLE `livrable`
+  ADD CONSTRAINT `livrable_ibfk_1` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `message`
+--
+ALTER TABLE `message`
+  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`id_expediteur`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`id_destinataire`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `projet`
+--
+ALTER TABLE `projet`
+  ADD CONSTRAINT `projet_ibfk_1` FOREIGN KEY (`id_responsable`) REFERENCES `utilisateurs` (`id`);
+
+--
+-- Contraintes pour la table `projet_champ`
+--
+ALTER TABLE `projet_champ`
+  ADD CONSTRAINT `fk_projet_champ_projet` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `projet_responsable`
+--
+ALTER TABLE `projet_responsable`
+  ADD CONSTRAINT `projet_responsable_ibfk_1` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`) ON DELETE CASCADE,
+  ADD CONSTRAINT `projet_responsable_ibfk_2` FOREIGN KEY (`id_enseignant`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `rendu_projet`
+--
+ALTER TABLE `rendu_projet`
+  ADD CONSTRAINT `rendu_projet_ibfk_1` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `ressource`
+--
+ALTER TABLE `ressource`
+  ADD CONSTRAINT `ressource_ibfk_1` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateurs` (`id`);
+
+--
+-- Contraintes pour la table `ressources`
+--
+ALTER TABLE `ressources`
+  ADD CONSTRAINT `ressources_ibfk_1` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ressources_ibfk_2` FOREIGN KEY (`id_enseignant`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `soutenance`
+--
+ALTER TABLE `soutenance`
+  ADD CONSTRAINT `soutenance_ibfk_1` FOREIGN KEY (`id_projet`) REFERENCES `projet` (`id_projet`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `soutenance_groupe`
+--
+ALTER TABLE `soutenance_groupe`
+  ADD CONSTRAINT `soutenance_groupe_ibfk_1` FOREIGN KEY (`id_soutenance`) REFERENCES `soutenance` (`id_soutenance`) ON DELETE CASCADE,
+  ADD CONSTRAINT `soutenance_groupe_ibfk_2` FOREIGN KEY (`id_groupe`) REFERENCES `groupe_projet` (`id_groupe`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `soutenance_passage`
+--
+ALTER TABLE `soutenance_passage`
+  ADD CONSTRAINT `fk_passage_soutenance` FOREIGN KEY (`id_soutenance`) REFERENCES `soutenance` (`id_soutenance`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `valeur_champ`
+--
+ALTER TABLE `valeur_champ`
+  ADD CONSTRAINT `valeur_champ_ibfk_1` FOREIGN KEY (`id_champ`) REFERENCES `champ_projet` (`id_champ`),
+  ADD CONSTRAINT `valeur_champ_ibfk_2` FOREIGN KEY (`id_groupe`) REFERENCES `groupe_projet` (`id_groupe`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
